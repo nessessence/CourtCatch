@@ -103,7 +103,8 @@ class Court extends React.Component {
     handleChange = e => {
         const { name,value } = e.target
         this.setState({
-            [name]: (name === "start_time" || name === "end_time" ) ? value.replace(":",".") : value
+            // [name]: (name === "start_time" || name === "end_time" ) ? value.replace(":",".") : value
+            [name] : (name === "start_time" || name === "end_time" ) ? value.substring(0,value.indexOf(":")) : value
         })
     }
 
@@ -314,11 +315,11 @@ class Court extends React.Component {
                             </Form.Control>
                         </Form.Group>
                         <Form.Group>
-                            <Form.Check type="checkbox" label="I want to reserve rackets too." name="reserveRacket" onChange={this.handleCheckbox}/>
+                            <Form.Check className="lead" type="checkbox" label="I want to reserve rackets too." name="reserveRacket" onChange={this.handleCheckbox}/>
                             {reserveRacketSection}
                         </Form.Group>
                         <Form.Group>
-                            <Form.Check type="checkbox" label="I want to reserve shuttlecocks too." name="reserveShuttlecock" onChange={this.handleCheckbox}/>
+                            <Form.Check className="lead" type="checkbox" label="I want to reserve shuttlecocks too." name="reserveShuttlecock" onChange={this.handleCheckbox}/>
                             {reserveShuttlecockSection}
                         </Form.Group>
                      
