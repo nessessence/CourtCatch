@@ -21,7 +21,10 @@ class Court extends React.Component {
             file: "",
             imagePreviewUrl: "",
             imageUploadError: "",
-            uploading: false
+            uploading: false,
+            day_of_the_week: "monday",
+            start_time: "",
+            end_time: ""
         }
     }
 
@@ -89,7 +92,7 @@ class Court extends React.Component {
     handleChange = e => {
         const { name,value } = e.target
         this.setState({
-            [name]: value
+            [name]: (name === "start_time" || name === "end_time" ) ? value.replace(":",".") : value
         })
     }
 
@@ -157,6 +160,19 @@ class Court extends React.Component {
         reader.readAsDataURL(file)
       }
 
+      handleReserve = async (e) => {
+          e.preventDefault();
+
+          console.log("submit reserve");
+          if ( this.state.start_time === "" || this.state.end_time === "" || this.state.day_of_the_week === "" ){
+            alert("invalide reserve input");
+            return;
+          }
+
+          let res = await this.props.bookCourt(this.state.courtName,this.state.start_time,this.state.end_time,this.state.day_of_the_week);
+          console.log(res);
+      }
+
     render(){
 
         if ( this.state.court == null ){
@@ -205,6 +221,41 @@ class Court extends React.Component {
             );
         }
 
+        let reserveSection;
+        if ( this.state.loadFinish ){
+            reserveSection = (
+                <div className="my-4">
+                    <h3>reserve this court</h3>
+                    <Form onSubmit={this.handleReserve}>
+                        <Form.Group className="row">
+                            <Form.Label className="col-md-3">start time</Form.Label>
+                            <Form.Control className="col-md-9" name="start_time" type="time" onChange={this.handleChange}></Form.Control>
+                        </Form.Group>
+                        <Form.Group className="row">
+                            <Form.Label className="col-md-3">end time</Form.Label>
+                            <Form.Control className="col-md-9" name="end_time" type="time" onChange={this.handleChange}></Form.Control>
+                        </Form.Group>
+                        <Form.Group className="row">
+                            <Form.Label className="col-md-3">day of the week</Form.Label>
+                            <Form.Control name="day_of_the_week" className="col-md-9" as="select" onChange={this.handleChange}>
+                                <option>monday</option>
+                                <option>tuesday</option>
+                                <option>wednesday</option>
+                                <option>thrusday</option>
+                                <option>friday</option>
+                                <option>saturday</option>
+                                <option>sunday</option>
+                            </Form.Control>
+                        </Form.Group>
+                        <div className="text-right">
+                            <button type="submti" className="btn btn-primary">reserve</button>
+                        </div>
+                        
+                    </Form>
+                </div>
+            );
+        }
+
         let courtCarousel;
         if ( this.state.court.images.length === 0 ){
             courtCarousel = <img className="court-carousel" src={ImagePlaceholder} alt="court image" />
@@ -235,6 +286,7 @@ class Court extends React.Component {
                         {courtCarousel}
                     </div>
                     <p>rating: <span style={{color: "orange"}}>{this.state.court.avg_score}</span></p>
+                    {reserveSection}
                     {addReviewSection}
                     {addImageSection}
                 </div>  
@@ -259,6 +311,9 @@ const mapDispatchToProps = dispatch => {
         },
         addImageToCourt: (courtName, url) => {
             return dispatch(courtActions.addImageToCourt(courtName, url));
+        },
+        bookCourt: (courtName, start, end, day_of_the_week) => {
+            return dispatch(courtActions.bookCourt(courtName,start,end,day_of_the_week));
         }
       };
 }

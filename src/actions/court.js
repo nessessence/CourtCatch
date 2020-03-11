@@ -139,3 +139,49 @@ export const addImageToCourt = (courtName, url) => {
         }
     }
 }
+
+export const searchCourts = (queryParams) => {
+    return async(dispatch, getState) => {
+        const token = getState().auth.token;
+
+        let config = {
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': 'Token '+token
+            }
+        }
+
+        let url = "http://localhost:8000/api/court" + queryParams;
+        try{
+            let res = await axios.get(url, config);
+            return res.data;
+        }
+        catch(err){
+            console.log("error");
+            throw err;
+        }
+    }
+}
+
+export const bookCourt = (courtName,start,end,day_of_the_week) => {
+    return async(dispatch, getState) => {
+        const token = getState().auth.token;
+
+        let config = {
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': 'Token '+token
+            }
+        }
+
+        let url = "http://localhost:8000/api/court/" + courtName +'/book/';
+        try{
+            let res = await axios.post(url,{start,end,day_of_the_week}, config);
+            return res.data;
+        }
+        catch(err){
+            console.log("error");
+            throw err;
+        }
+    }
+} 

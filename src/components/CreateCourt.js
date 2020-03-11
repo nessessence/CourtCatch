@@ -41,8 +41,14 @@ class CreateCourt extends React.Component {
                 this.setState({
                     isSubmiting: true
                 });
-                let data = await this.props.createCourt(this.state.name, this.state.price, this.state.desc,
+                try {
+                    let data = await this.props.createCourt(this.state.name, this.state.price, this.state.desc,
                     this.state.latitude, this.state.longtitude, this.state.courtCount);
+                }
+                catch(err){
+                    alert(err.response.data.message);
+                    return ;
+                }
 
                 this.setState({
                     name: "",
@@ -128,7 +134,6 @@ class CreateCourt extends React.Component {
     }
 
     handleApiLoaded = (map, maps) => {
-        console.log(map);
         let marker = new maps.Marker({
             position: {
                 lat: this.state.latitude,

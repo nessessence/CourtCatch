@@ -17,11 +17,12 @@ import ChangePassword from './components/ChagePassword';
 import Profile from './components/Profile';
 import Log from './components/Log';
 import CreateCourt from './components/CreateCourt';
-import Courts from './components/Courts';
+import Search from './components/Search';
 import Court from './components/Court';
 import SecondaryNavBar from './components/SecondaryNavBar';
 import MyCourt from './components/MyCourt';
 import BecomeAProvider from './components/BecomeAProvider';
+import Courts from './components/Courts';
 
 let store = createStore(myApp, applyMiddleware(thunk));
 
@@ -75,8 +76,9 @@ class RootContainerComponent extends React.Component {
               <PrivateRoute exact path="/add_court" component={CreateCourt} />
               <PrivateRoute exact path="/my_courts" component={MyCourt} />
               <PrivateRoute exact path="/become_a_provider" component={BecomeAProvider} />
-              <Route exact path="/booking" component={Courts} />
+              <Route exact path="/search" component={Search} />
               <PrivateRoute exact path="/booking/:courtName" component={Court} />
+              <PrivateRoute exact path="/court_res" component={Courts} />
               <Route exact path='/' render={()=> <Home />} />
               <Route exact path="/about" render={()=> <About />} />
             </Switch>

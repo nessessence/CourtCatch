@@ -1,32 +1,24 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import {court as courtActions} from '../actions';
-import axios from 'axios';
-import { NavLink } from 'react-router-dom';
+import React from 'react'
+import {court} from '../actions';
+import { connect } from 'react-redux';
 
 class Courts extends React.Component {
     constructor(props){
         super(props);
         this.state = {
+            loadFinish: false,
             courts: null
         }
     }
 
-    async componentDidMount(){
-        // try{
-        //     let courts = await this.props.loadCourts();
-        //     this.setState({
-        //         courts: courts
-        //     })
-        // }
-        // catch(err){
-        //     alert(err)
-        // }
-        
+    async componentDidMount() {
+        let queryParams = this.props.location.search;
+        let res = await this.props.searchCourts(queryParams);
+        console.log(res);
     }
 
     render(){
-
+        console.log("courts render");
         return (
             <div className="app-content-inner">
                 <div className="container">
@@ -34,32 +26,14 @@ class Courts extends React.Component {
                 </div>
             </div>
         );
-
-        // let courts = this.state.courts;
-        // let components = [];
-        // for(let index in courts){
-        //     let court = courts[index];
-        //     components.push(
-        //         <div className="mb-2">
-        //             <NavLink to={"/booking/"+court.name+"/"}>{JSON.stringify(court)}</NavLink>
-        //         </div>
-        //     );
-        // }
-
-        // return (
-        //     <div className="container">
-        //         <h1>Courts</h1>
-        //         {components}
-        //     </div>
-        // );
     }
 }
-  
+
 const mapDispatchToProps = dispatch => {
     return {
-        loadCourts: () => {
-          return dispatch(courtActions.loadCourts());
-        },
+        searchCourts: (queryParams) => {
+            return dispatch(court.searchCourts(queryParams));
+        }
       };
 }
 
