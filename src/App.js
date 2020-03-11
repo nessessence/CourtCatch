@@ -76,7 +76,7 @@ class RootContainerComponent extends React.Component {
               <PrivateRoute exact path="/add_court" component={CreateCourt} />
               <PrivateRoute exact path="/my_courts" component={MyCourt} />
               <PrivateRoute exact path="/become_a_provider" component={BecomeAProvider} />
-              <Route exact path="/search" component={Search} />
+              <PrivateRoute exact path="/search" component={Search} />
               <PrivateRoute exact path="/booking/:courtName" component={Court} />
               <PrivateRoute exact path="/court_res" component={Courts} />
               <Route exact path='/' render={()=> <Home />} />

@@ -9,7 +9,7 @@ class Search extends React.Component {
         super(props);
         this.state = {
             name: "",
-            rating: 1.0,
+            rating: 0.0,
             start_time: "06.00",
             end_time: "23.59",
             searchByLocation: false,
@@ -57,12 +57,7 @@ class Search extends React.Component {
     }
 
     handleSearchByName =  () => {
-        console.log('handle search by name');   
-        if ( this.state.name === "" ){
-            alert("wrong name input");
-            return
-        }
-
+        console.log('handle search');   
         this.setState({
             searchByName: true
         })
@@ -79,7 +74,7 @@ class Search extends React.Component {
 
         if ( this.state.searchByLocation ){
 
-            const max_distance = 0.04 // about 4 km
+            const max_distance = 0.24 // about 4 km
 
             return <Redirect to={{
                 pathname: "/court_res",
@@ -110,14 +105,14 @@ class Search extends React.Component {
                             <Form.Label className="col-md-3 ">min rating</Form.Label>
                             <Form.Control className="col-md-9" max="5" min="0" type="number" name="rating" onChange={this.handleChange} placeholder="1.0" defaultValue={this.state.rating}></Form.Control>
                         </Form.Group>
-                        <Form.Group className="row">
+                        {/* <Form.Group className="row">
                             <Form.Label className="col-md-3">start time</Form.Label>
                             <Form.Control className="col-md-9" max="24" min="0" type="time" name="start_time" onChange={this.handleChange} defaultValue="06:00"></Form.Control>
                         </Form.Group>
                         <Form.Group className="row">
                             <Form.Label className="col-md-3">end time</Form.Label>
                             <Form.Control className="col-md-9" max="24" min="0" type="time" name="end_time" onChange={this.handleChange} defaultValue="23:59"></Form.Control>
-                        </Form.Group>
+                        </Form.Group> */}
                         <div className="text-right">
                             <button className="btn btn-primary" onClick={this.handleSearchByName}>search</button>
                             <span className="mx-3">or</span>

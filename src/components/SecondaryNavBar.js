@@ -17,7 +17,7 @@ class SecondaryNavBar extends React.Component {
 
         return (
             <div className="secondary-navbar shadow-sm" expand="lg">
-                <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/search">Booking</NavLink>
+                <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/search">Search</NavLink>
                 <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/my_courts">My Courts</NavLink>
                 {
                     this.props.user.is_verified ? 

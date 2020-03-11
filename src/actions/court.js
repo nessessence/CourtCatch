@@ -185,3 +185,49 @@ export const bookCourt = (courtName,start,end,day_of_the_week) => {
         }
     }
 } 
+
+export const loadRackets = () => {
+    return async(dispatch, getState) => {
+        const token = getState().auth.token;
+
+        let config = {
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': 'Token '+token
+            }
+        }
+
+        let url = "http://localhost:8000/api/racket/";
+        try{
+            let res = await axios.get(url, config);
+            return res.data;
+        }
+        catch(err){
+            console.log("error");
+            throw err;
+        }
+    }
+}
+
+export const loadShuttlecock = () => {
+    return async(dispatch, getState) => {
+        const token = getState().auth.token;
+
+        let config = {
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': 'Token '+token
+            }
+        }
+
+        let url = "http://localhost:8000/api/shuttlecock/";
+        try{
+            let res = await axios.get(url, config);
+            return res.data;
+        }
+        catch(err){
+            console.log("error");
+            throw err;
+        }
+    }
+}
