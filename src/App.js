@@ -23,6 +23,7 @@ import SecondaryNavBar from './components/SecondaryNavBar';
 import MyCourt from './components/MyCourt';
 import BecomeAProvider from './components/BecomeAProvider';
 import Courts from './components/Courts';
+import TopUp from './components/TopUp';
 
 let store = createStore(myApp, applyMiddleware(thunk));
 
@@ -79,6 +80,7 @@ class RootContainerComponent extends React.Component {
               <PrivateRoute exact path="/search" component={Search} />
               <PrivateRoute exact path="/booking/:courtName" component={Court} />
               <PrivateRoute exact path="/court_res" component={Courts} />
+              <PrivateRoute exact path="/topup" component={TopUp} />
               <Route exact path='/' render={()=> <Home />} />
               <Route exact path="/about" render={()=> <About />} />
             </Switch>

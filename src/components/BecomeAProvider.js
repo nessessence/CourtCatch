@@ -129,7 +129,7 @@ class BecomeAProvider extends React.Component {
                 <div className="container">
                     <h1>Become A Provider</h1>
                     <br />
-                    <Form className="text-left" onSubmit={this.handleSubmit}>
+                    <Form className="text-right" onSubmit={this.handleSubmit}>
                         <Form.Group as={Row}>
                             <Form.Label column sm="4">First Name in Thai</Form.Label>
                             <Col>

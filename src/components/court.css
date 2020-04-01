@@ -8,5 +8,18 @@
 }
 
 .carousel {
-    background-color: aliceblue;
+    background-color: white;
+}
+
+.header-text-group {
+    background-color: white;
+    padding: 10px;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.section-border {
+    background-color: white;
+    padding: 15px;
+    border-radius: 1rem;
 }

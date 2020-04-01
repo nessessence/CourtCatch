@@ -26,6 +26,7 @@ class SecondaryNavBar extends React.Component {
                 }
                 <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/history">History</NavLink>
                 <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/profile">Profile</NavLink>
+                <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/topup">Top Up</NavLink>
             </div>
         );
     }

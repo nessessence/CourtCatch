@@ -17,12 +17,20 @@ class MyCourt extends React.Component {
     }
 
     async componentDidMount(){
-        let courts = await this.props.loadMyCourt();
-        console.log(courts);
-        this.setState({
-            courts: courts,
-            loadFinish: true
-        });
+        try {
+            let courts = await this.props.loadMyCourt();
+            console.log(courts);
+            this.setState({
+                courts: courts,
+                loadFinish: true
+            });
+        }
+        catch(e){
+            this.setState({
+                courts: [],
+                loadFinish: true
+            })
+        }
     }
 
     render(){
@@ -55,6 +63,10 @@ class MyCourt extends React.Component {
                     </Card>
                 </Link>
             );
+        }
+
+        if ( courtComponents.length === 0 ){
+            courtComponents = <h1 className="text-danger mt-4">You dont have any court.</h1>
         }
 
         return (

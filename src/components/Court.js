@@ -7,6 +7,7 @@ import ImagePlaceholder from '../images/imagePlaceholder.jpg';
 import './court.css';
 import GoogleMapReact from 'google-map-react';
 import { gmApiKey} from '../private/keys';
+import StarRatings from 'react-star-ratings';
 
 class Court extends React.Component {
     constructor(props){
@@ -15,7 +16,7 @@ class Court extends React.Component {
             courtName: this.props.match.params.courtName,
             court: null,
             loadFinish: false,
-            score: "",
+            score: "5",
             review: "",
             formErrors: {
                 score: ""
@@ -204,6 +205,12 @@ class Court extends React.Component {
         this.setState({ [name]: e.target.checked });
     }
 
+    changeRating = e => {
+        this.setState({
+            score: e
+        });
+    }
+
     render(){
 
         if ( this.state.court == null ){
@@ -213,17 +220,23 @@ class Court extends React.Component {
         let addReviewSection;
         if ( this.state.loadFinish && !this.isUserOwner() ){
             addReviewSection = (
-                <div className="my-4">
+                <div className="my-4 section-border">
                     <h3>Add Review</h3>
                     <Form onSubmit={this.handleReview}>
                         <Form.Group className="text-left">
-                            <Form.Label>score</Form.Label>
-                            <Form.Control name="score" type="number" min="0" max="5" onChange={this.handleChange}></Form.Control>
-                            <p className="error-form-field">{this.state.formErrors.score}</p>
+                            <Form.Label className="mr-4">score</Form.Label>
+                            <StarRatings
+                                rating={parseFloat(this.state.score)}
+                                starRatedColor="orange"
+                                starDimension="20px"
+                                changeRating={this.changeRating}
+                                numberOfStars={5}
+                                name='rating'
+                            />
                         </Form.Group>
                         <Form.Group className="text-left">
                             <Form.Label>review</Form.Label>
-                            <textarea name='review' className="form-control" col="2" onChange={this.handleChange}></textarea>
+                            <textarea placeholder="write your review here..." name='review' className="form-control" col="2" onChange={this.handleChange}></textarea>
                         </Form.Group>
                         <div className="text-right">
                             <button className="btn btn-primary" type="submit">add review</button>
@@ -259,9 +272,9 @@ class Court extends React.Component {
                 reserveRacketSection.push(
                     <Row key={"row"+racket.name}>
                         <Col md="3">{"name: "+racket.name}</Col>
-                        <Col md="3">{"price: " + racket.price+" bath"}</Col>
+                        <Col md="2">{"price: " + racket.price+" bath"}</Col>
                         <Col md="2">{"in stock: " +racket.count}</Col>
-                        <Col md="1">reserve:</Col>
+                        <Col md="2">reserve amount:</Col>
                         <Col md="3">
                             <Form.Control type="number" name={"racket_"+racket.name} min="0" max={racket.count} />
                         </Col>
@@ -277,9 +290,9 @@ class Court extends React.Component {
                 reserveShuttlecockSection.push(
                     <Row key={"row"+shuttlecock.name}>
                         <Col md="3">{"name: "+shuttlecock.name}</Col>
-                        <Col md="3">{"price: " + shuttlecock.count_per_unit+" bath"}</Col>
+                        <Col md="2">{"price: " + shuttlecock.count_per_unit+" bath"}</Col>
                         <Col md="2">{"in stock: " +shuttlecock.count}</Col>
-                        <Col md="1">reserve:</Col>
+                        <Col md="2">reserve amount:</Col>
                         <Col md="3">
                             <Form.Control type="number" name={"racket_"+shuttlecock.name} min="0" max={shuttlecock.count} />
                         </Col>
@@ -291,20 +304,21 @@ class Court extends React.Component {
         let reserveSection;
         if ( this.state.loadFinish && this.state.court.is_verified ){
             reserveSection = (
-                <div className="my-4">
+                <div className="my-4 section-border">
                     <h3>reserve this court</h3>
-                    <Form onSubmit={this.handleReserve}>
+                    <hr />
+                    <Form onSubmit={this.handleReserve} className="mt-4">
                         <Form.Group className="row">
                             <Form.Label className="col-md-3">start time</Form.Label>
-                            <Form.Control className="col-md-9" name="start_time" type="time" onChange={this.handleChange}></Form.Control>
+                            <Form.Control className="col-md-5" name="start_time" type="time" onChange={this.handleChange}></Form.Control>
                         </Form.Group>
                         <Form.Group className="row">
                             <Form.Label className="col-md-3">end time</Form.Label>
-                            <Form.Control className="col-md-9" name="end_time" type="time" onChange={this.handleChange}></Form.Control>
+                            <Form.Control className="col-md-5" name="end_time" type="time" onChange={this.handleChange}></Form.Control>
                         </Form.Group>
                         <Form.Group className="row">
                             <Form.Label className="col-md-3">day of the week</Form.Label>
-                            <Form.Control name="day_of_the_week" className="col-md-9" as="select" onChange={this.handleChange}>
+                            <Form.Control name="day_of_the_week" className="col-md-5" as="select" onChange={this.handleChange}>
                                 <option value="1">monday</option>
                                 <option value="2">tuesday</option>
                                 <option value="3">wednesday</option>
@@ -314,17 +328,18 @@ class Court extends React.Component {
                                 <option value="0">sunday</option>
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group>
-                            <Form.Check className="lead" type="checkbox" label="I want to reserve rackets too." name="reserveRacket" onChange={this.handleCheckbox}/>
+                        <hr className="my-4" />
+                        <h5 className="mb-4">Do you want to reserve rattles and buy shuttlecocks?</h5>
+                        <Form.Group> 
+                            <Form.Check type="checkbox" label="I want to reserve rackets." name="reserveRacket" onChange={this.handleCheckbox}/>
                             {reserveRacketSection}
                         </Form.Group>
                         <Form.Group>
-                            <Form.Check className="lead" type="checkbox" label="I want to reserve shuttlecocks too." name="reserveShuttlecock" onChange={this.handleCheckbox}/>
+                            <Form.Check type="checkbox" label="I want to buy shuttlecocks." name="reserveShuttlecock" onChange={this.handleCheckbox}/>
                             {reserveShuttlecockSection}
                         </Form.Group>
-                     
                         <div className="text-right mt-3">
-                            <button type="submti" className="btn btn-primary">reserve</button>
+                            <button type="submit" className="btn btn-primary">reserve</button>
                         </div>
                         
                     </Form>
@@ -353,33 +368,54 @@ class Court extends React.Component {
             );
         }
 
-        let mapSection;
-        if ( this.state.loadFinish ){
-            mapSection = (
-                <div style={{width: "100%", height: "600px"}}>
-                    <GoogleMapReact
-                        bootstrapURLKeys={{ key: gmApiKey }}
-                        defaultZoom={11}
-                        center={{lat: this.state.court.lat, lng: this.state.court.long}}
-                        yesIWantToUseGoogleMapApiInternals
-                        onGoogleApiLoaded={({ map, maps }) => this.handleApiLoaded(map, maps)}
-                        >
+        // let mapSection;
+        // if ( this.state.loadFinish ){
+        //     mapSection = (
+        //         <div style={{width: "100%", height: "600px"}}>
+        //             <GoogleMapReact
+        //                 bootstrapURLKeys={{ key: gmApiKey }}
+        //                 defaultZoom={11}
+        //                 center={{lat: this.state.court.lat, lng: this.state.court.long}}
+        //                 yesIWantToUseGoogleMapApiInternals
+        //                 onGoogleApiLoaded={({ map, maps }) => this.handleApiLoaded(map, maps)}
+        //                 >
                             
-                    </GoogleMapReact>
-                </div>
-            );
-        }
+        //             </GoogleMapReact>
+        //         </div>
+        //     );
+        // }
+
+        let rating = (
+            <StarRatings
+                rating={this.state.court.avg_score}
+                starDimension="30px"
+                starRatedColor="orange"
+                numberOfStars={5}
+                name='rating'
+            />
+        );
 
         return (
             <div className="app-content-inner">
                 <div className="container text-left">
-                    <h1>{this.state.court.name}</h1>
-                    <p>{this.state.court.desc}</p>
+                    <div className="header-text-group">
+                        <h1>{this.state.court.name}</h1>
+                        <p>{this.state.court.desc}</p>
+                    </div>
                     <div className="text-center court-corousel-holder">
                         {courtCarousel}
                     </div>
-                    <p>rating: <span style={{color: "orange"}}>{this.state.court.avg_score.toFixed(1)}</span></p>
-                    {mapSection}
+                    {/* <p>rating: <span style={{color: "orange"}}>{this.state.court.avg_score.toFixed(1)}</span></p> */}
+                    <div className="my-3 d-flex flex-row justify-content-between">
+                        <div>
+                            rating: {rating}
+                        </div>
+                        <div>
+                            <span className="text-secondary">owner: </span>
+                            <span>{this.state.court.owner.first_name + " " + this.state.court.owner.last_name}</span>
+                        </div>
+                    </div>
+                    {/* {mapSection} */}
                     {reserveSection}
                     {addReviewSection}
                     {addImageSection}
