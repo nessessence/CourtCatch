@@ -152,6 +152,7 @@ export const searchCourts = (queryParams) => {
         }
 
         let url = "http://localhost:8000/api/court" + queryParams;
+        console.log(url);
         try{
             let res = await axios.get(url, config);
             return res.data;
@@ -166,6 +167,8 @@ export const searchCourts = (queryParams) => {
 export const bookCourt = (courtName,start,end,day_of_the_week) => {
     return async(dispatch, getState) => {
         const token = getState().auth.token;
+        start = 12;
+        end = 14;
 
         let config = {
             headers: {
@@ -186,7 +189,7 @@ export const bookCourt = (courtName,start,end,day_of_the_week) => {
     }
 } 
 
-export const loadRackets = () => {
+export const loadRackets = (bookingID) => {
     return async(dispatch, getState) => {
         const token = getState().auth.token;
 
@@ -197,7 +200,7 @@ export const loadRackets = () => {
             }
         }
 
-        let url = "http://localhost:8000/api/racket/";
+        let url = "http://localhost:8000/api/booking/"+bookingID+"/get_rackets/";
         try{
             let res = await axios.get(url, config);
             return res.data;
@@ -209,7 +212,7 @@ export const loadRackets = () => {
     }
 }
 
-export const loadShuttlecock = () => {
+export const loadShuttlecock = (bookingID) => {
     return async(dispatch, getState) => {
         const token = getState().auth.token;
 
@@ -220,9 +223,226 @@ export const loadShuttlecock = () => {
             }
         }
 
-        let url = "http://localhost:8000/api/shuttlecock/";
+        let url = "http://localhost:8000/api/booking/"+bookingID+"/get_shuttlecocks/";
         try{
             let res = await axios.get(url, config);
+            return res.data;
+        }
+        catch(err){
+            console.log("error");
+            throw err;
+        }
+    }
+}
+
+export const loadBooking = (bookingID) => {
+    return async(dispatch, getState) => {
+        const token = getState().auth.token;
+
+        let config = {
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': 'Token '+token
+            }
+        }
+
+        let url = "http://localhost:8000/api/booking/"+bookingID+"/";
+        try{
+            let res = await axios.get(url, config);
+            return res.data;
+        }
+        catch(err){
+            console.log("error");
+            throw err;
+        }
+    }
+}
+
+
+export const addRacket = (courtName, name, price) => {
+    return async(dispatch, getState) => {
+        const token = getState().auth.token;
+
+
+        let config = {
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': 'Token '+token
+            }
+        }
+
+        let url = "http://localhost:8000/api/court/" + courtName +'/add_racket/';
+        try{
+            let res = await axios.post(url,{name,price}, config);
+            return res.data;
+        }
+        catch(err){
+            console.log("error");
+            throw err;
+        }
+    }
+} 
+
+export const addShuttlecock = (courtName, name, count, count_per_unit, price) => {
+    return async(dispatch, getState) => {
+        const token = getState().auth.token;
+
+
+        let config = {
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': 'Token '+token
+            }
+        }
+
+        let url = "http://localhost:8000/api/court/" + courtName +'/add_shuttlecock/';
+        try{
+            let res = await axios.post(url,{name, count, count_per_unit,price}, config);
+            return res.data;
+        }
+        catch(err){
+            console.log("error");
+            throw err;
+        }
+    }
+} 
+
+export const reserveRacket = (bookingID, id) => {
+    return async(dispatch, getState) => {
+        const token = getState().auth.token;
+
+
+        let config = {
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': 'Token '+token
+            }
+        }
+
+        let url = "http://localhost:8000/api/booking/" + bookingID +'/reserve_racket/';
+        try{
+            let res = await axios.post(url,{id}, config);
+            return res.data;
+        }
+        catch(err){
+            console.log("error");
+            throw err;
+        }
+    }
+}
+
+export const buyShuttlecock = (bookingID, id, count) => {
+    return async(dispatch, getState) => {
+        const token = getState().auth.token;
+
+
+        let config = {
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': 'Token '+token
+            }
+        }
+
+        let url = "http://localhost:8000/api/booking/" + bookingID +'/buy_shuttlecock/';
+        try{
+            let res = await axios.post(url,{id,count}, config);
+            return res.data;
+        }
+        catch(err){
+            console.log("error");
+            throw err;
+        }
+    }
+} 
+
+export const cancelRacket = (racketID) => {
+    return async(dispatch, getState) => {
+        const token = getState().auth.token;
+
+
+        let config = {
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': 'Token '+token
+            }
+        }
+
+        let url = "http://localhost:8000/api/racket/" + racketID +'/cancel/';
+        try{
+            let res = await axios.post(url,{}, config);
+            return res.data;
+        }
+        catch(err){
+            console.log("error");
+            throw err;
+        }
+    }
+} 
+
+export const cancelShuttlecock = (shuttlecockID) => {
+    return async(dispatch, getState) => {
+        const token = getState().auth.token;
+
+
+        let config = {
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': 'Token '+token
+            }
+        }
+
+        let url = "http://localhost:8000/api/shuttlecock/" + shuttlecockID +'/cancel/';
+        try{
+            let res = await axios.post(url,{}, config);
+            return res.data;
+        }
+        catch(err){
+            console.log("error");
+            throw err;
+        }
+    }
+} 
+
+export const cancelCourt = (bookingID) => {
+    return async(dispatch, getState) => {
+        const token = getState().auth.token;
+
+
+        let config = {
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': 'Token '+token
+            }
+        }
+
+        let url = "http://localhost:8000/api/booking/" + bookingID +'/cancel/';
+        try{
+            let res = await axios.post(url,{}, config);
+            return res.data;
+        }
+        catch(err){
+            console.log("error");
+            throw err;
+        }
+    }
+}
+
+
+export const callSpeech = (url,username) => {
+    return async(dispatch, getState) => {
+        const token = getState().auth.token;
+
+
+        let config = {
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': 'Token '+token
+            }
+        }
+
+        let apiUrl = "http://localhost:8000/api/shuttlecock/";
+        try{
+            let res = await axios.post(apiUrl,{url,username}, config);
             return res.data;
         }
         catch(err){

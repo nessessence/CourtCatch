@@ -1,11 +1,40 @@
 import axios from 'axios';
 
+export const getUserInfo = (username) => {
+  return async (dispatch, getState) => {
+
+    const token = getState().auth.token;
+    console.log(token);
+
+    let config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Token '+token
+      }
+    }
+
+    try{
+      let res = await axios.get("http://localhost:8000/api/user/"+username+"/", config);
+      console.log(res);
+      return res.data;
+    }
+    catch(err){
+      throw err;
+    }
+    
+  };
+}
+
 export const loadUser = (username) => {
     return (dispatch, getState) => {
       dispatch({type: "USER_LOADING"});
   
       const token = getState().auth.token;
-      console.log("load user " + token);
+      if ( token == null || username == null){
+        dispatch({type: "LOGIN_FAILED"});
+        return ;
+      }
+      console.log("load user "+ username + " " + token);
   
       let headers = {
         "Content-Type": "application/json",
@@ -14,7 +43,7 @@ export const loadUser = (username) => {
       if (token) {
         headers["Authorization"] = `Token ${token}`;
 
-        return fetch("/api/user/"+(username)+"/", {headers, })  
+        return fetch("http://localhost:8000/api/user/"+(username)+"/", {headers, })  
         .then(res => {
           if (res.status < 500) {
             return res.json().then(data => {
@@ -27,6 +56,7 @@ export const loadUser = (username) => {
         })
         .then(res => {
           if (res.status === 200) {
+            console.log(res);
             dispatch({type: 'USER_LOADED', user: res.data });
             return res.data;
           } else if (res.status >= 400 && res.status < 500) {
@@ -44,7 +74,7 @@ export const loadUser = (username) => {
       let headers = {"Content-Type": "application/json"};
       let body = JSON.stringify({username, password});
   
-      return fetch("/auth/", {headers, body, method: "POST"})
+      return fetch("http://localhost:8000/auth/", {headers, body, method: "POST"})
         .then(res => {
           if (res.status < 500) {
             return res.json().then(data => {
@@ -76,12 +106,12 @@ export const loadUser = (username) => {
     return (dispatch, getState) => {
       let headers = {
           "Content-Type": "application/json",
-          "Authorization": "Token ead12abc8e793aa3447e2464c79abfccc5225d1c"
+          "Authorization": "Token 9ea82d11991654e4b9221ff8559a53b2d9f758be"
          };
       let body = JSON.stringify({first_name, last_name, username, password, email, phone_number});
       console.log(body);
   
-      return fetch("/api/user/", {headers, body, method: "POST"})
+      return fetch("http://localhost:8000/api/user/", {headers, body, method: "POST"})
         .then(res => {
           if (res.status < 500) {
             return res.json().then(data => {

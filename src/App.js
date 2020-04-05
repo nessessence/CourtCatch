@@ -9,6 +9,7 @@ import { Provider, connect } from 'react-redux';
 import thunk from 'redux-thunk';
 import {auth} from './actions';
 import myApp from './reducers';
+import ReactLoading from 'react-loading';
 
 import Home from './components/Home';
 import NavBar from './components/NavBar';
@@ -24,6 +25,8 @@ import MyCourt from './components/MyCourt';
 import BecomeAProvider from './components/BecomeAProvider';
 import Courts from './components/Courts';
 import TopUp from './components/TopUp';
+import MyBookingList from './components/MyBookingList';
+import MyBooking from './components/MyBooking';
 
 let store = createStore(myApp, applyMiddleware(thunk));
 
@@ -49,7 +52,7 @@ class RootContainerComponent extends React.Component {
     return <Route {...rest} render={props => {
       if (!this.props.auth.isAuthenticated) {
         console.log('app.js not authenticate');
-        return <Redirect to="/" />;
+        return <Redirect to="/search" />;
       } else {
         return <ChildComponent {...props} />
       }
@@ -57,8 +60,12 @@ class RootContainerComponent extends React.Component {
   }
 
   render() {
-    if ( this.props.auth.isLoading && this.state.tempUsername !== null ){
-      return <h1>loading...</h1>
+    if ( this.props.auth.isLoading ){
+      return (
+        <div style={{position: "fixed", left: "50%", top: "50%"}}>
+            <ReactLoading type="spin" color="grey" height={'50%'} width={'50%'} />
+        </div>
+    );
     }
     console.log('start rendering');
     let {PrivateRoute} = this;
@@ -77,10 +84,12 @@ class RootContainerComponent extends React.Component {
               <PrivateRoute exact path="/add_court" component={CreateCourt} />
               <PrivateRoute exact path="/my_courts" component={MyCourt} />
               <PrivateRoute exact path="/become_a_provider" component={BecomeAProvider} />
-              <PrivateRoute exact path="/search" component={Search} />
+              <Route exact path="/search" component={Search} />
               <PrivateRoute exact path="/booking/:courtName" component={Court} />
               <PrivateRoute exact path="/court_res" component={Courts} />
               <PrivateRoute exact path="/topup" component={TopUp} />
+              <PrivateRoute exact path="/my_booking" component={MyBookingList} />
+              <PrivateRoute exact path="/my_booking/:bookingID" component={MyBooking} />
               <Route exact path='/' render={()=> <Home />} />
               <Route exact path="/about" render={()=> <About />} />
             </Switch>

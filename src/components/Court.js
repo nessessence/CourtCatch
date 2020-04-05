@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {court as courtActions} from '../actions';
+import {court as courtActions, auth as authActions} from '../actions';
 import { Form, Col, CarouselItem, Carousel, Row } from 'react-bootstrap';
 import {upload as uploadFileToS3} from '../s3';
 import ImagePlaceholder from '../images/imagePlaceholder.jpg';
@@ -8,6 +8,7 @@ import './court.css';
 import GoogleMapReact from 'google-map-react';
 import { gmApiKey} from '../private/keys';
 import StarRatings from 'react-star-ratings';
+import { Redirect } from 'react-router-dom';
 
 class Court extends React.Component {
     constructor(props){
@@ -29,23 +30,50 @@ class Court extends React.Component {
             start_time: "",
             end_time: "",
             marker: null,
-            reserveRacket: false,
-            reserveShuttlecock: false,
-            rackets: null,
-            shuttlecocks: null
+
+            racket_name: "",
+            racket_price: "",
+            shuttlecock_name: "",
+            shuttlecock_count: "",
+            shuttlecock_count_per_unit: "",
+            shuttlecock_price: "",
+
+            shouldRedirect: false,
+            booking_id: null
+        
         }
     }
 
     async componentDidMount(){
+        let queryParams = this.props.location.search;
+        let arr = queryParams.split("&");
+        let start_time, end_time, day_of_the_week = -1;
+
+        for(let i=0; i<arr.length; ++i){
+            if ( arr[i].includes("start_time") ){
+                start_time = arr[i].split("=")[1];
+            }
+            else if ( arr[i].includes("end_time") ){
+                end_time = arr[i].split("=")[1];
+            }
+            else if ( arr[i].includes("day_of_the_week") ){
+                day_of_the_week = arr[i].split("=")[1];
+            }
+        }
+        this.setState({
+            start_time: start_time,
+            end_time, end_time,
+            day_of_the_week_query: day_of_the_week
+        });
+
         try {
             let court = await this.props.loadCourt(this.state.courtName);
-            let rackets = await this.props.loadRackets();
-            let shuttlecocks = await this.props.loadShuttlecock();
+ 
             this.setState({
                 loadFinish: true,
                 court: court,
-                rackets: rackets,
-                shuttlecocks: shuttlecocks
+                // rackets: rackets,
+                // shuttlecocks: shuttlecocks
             })
         }   
         catch(err){
@@ -61,9 +89,7 @@ class Court extends React.Component {
             try{
                 let res = await this.props.reviewCourt(this.state.courtName, this.state.score, this.state.review);
                 alert("court reviewed");
-                this.setState({
-
-                });
+                window.location.reload();
             }
             catch(err){
                 alert(err);
@@ -175,15 +201,23 @@ class Court extends React.Component {
 
       handleReserve = async (e) => {
           e.preventDefault();
+          this.setState({
+              uploading: true
+          })
 
           console.log("submit reserve");
           if ( this.state.start_time === "" || this.state.end_time === "" || this.state.day_of_the_week === "" ){
-            alert("invalide reserve input");
+            alert("invalid reserve input");
             return;
           }
 
           let res = await this.props.bookCourt(this.state.courtName,this.state.start_time,this.state.end_time,this.state.day_of_the_week);
-          console.log(res);
+          console.log(res.booking_id);
+          alert("reserve success");
+          this.setState({
+              shouldRedirect: true,
+              booking_id: res.booking_id
+          });
       }
 
       handleApiLoaded = (map, maps) => {
@@ -211,10 +245,98 @@ class Court extends React.Component {
         });
     }
 
+    handleAddRacket = async e => {
+        e.preventDefault();
+        this.setState({
+            uploading: true
+        });
+
+        if ( this.state.racket_name === "" || this.state.racket_price === "" ){
+            alert("racket inputs are invalid.");
+            return ;
+        }
+
+        try{
+            await this.props.addRacket(this.state.courtName, this.state.racket_name, this.state.racket_price);
+            alert("add racket success");
+            window.location.reload();
+        }
+        catch(e){
+            alert("something went wrong, please try again later");
+            console.error(e);
+            this.setState({
+                uploading: false
+            });
+        }
+    }
+
+    handleAddShuttlecock = async e => {
+        e.preventDefault();
+        this.setState({
+            uploading: true
+        });
+
+        if ( this.state.shuttlecock_name === "" || this.state.shuttlecock_count === "" || 
+                this.state.shuttlecock_count_per_unit === "" || this.state.shuttlecock_price === ""  ){
+            alert("shuttlecocks inputs are invalid.");
+            return ;
+        }
+
+        try{
+            await this.props.addShuttlecock(this.state.courtName, this.state.shuttlecock_name, this.state.shuttlecock_count,
+                        this.state.shuttlecock_count_per_unit, this.state.shuttlecock_price);
+            alert("add shuttlecocks success");
+            window.location.reload();
+        }
+        catch(e){
+            alert("something went wrong, please try again later");
+            console.error(e);
+            this.setState({
+                uploading: false
+            });
+        }
+    }
+
+    pad = (n, width) => {
+        let z ='0';
+        n = n + '';
+        return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+      }
+
+    mapTime =(timeNum) => {
+        timeNum = parseInt(timeNum);
+        if ( timeNum % 2 === 0 ){
+            return this.pad(timeNum/2,2) + ":00";
+        }
+        else {
+            return this.pad(timeNum/2,2) + ":30";
+        }
+    }
+
     render(){
+
+        if ( this.state.shouldRedirect ){
+            return <Redirect to={"/my_booking/" + this.state.booking_id} />
+        }
 
         if ( this.state.court == null ){
             return <h1>Loading...</h1>
+        }
+
+        let reviews = [];
+        if ( this.state.loadFinish ){
+            for(let i=0; i<this.state.court.reviews.length; ++i){
+                let review = this.state.court.reviews[i];
+                reviews.push(
+                    <div className="section-border d-flex flex-column my-1">
+                        <StarRatings rating={review.score} starDimension="15px" numberOfStars={5} starRatedColor="orange" />
+                        <span>{review.review}</span>
+                    </div>
+                );
+            }
+        }
+        if ( reviews.length === 0 ){
+            reviews = <p>this court has no review.</p>
         }
 
         let addReviewSection;
@@ -265,42 +387,6 @@ class Court extends React.Component {
             );
         }
 
-        let reserveRacketSection = [];
-        if ( this.state.loadFinish && this.state.reserveRacket ){
-            for( let index in this.state.rackets ){
-                let racket = this.state.rackets[index];
-                reserveRacketSection.push(
-                    <Row key={"row"+racket.name}>
-                        <Col md="3">{"name: "+racket.name}</Col>
-                        <Col md="2">{"price: " + racket.price+" bath"}</Col>
-                        <Col md="2">{"in stock: " +racket.count}</Col>
-                        <Col md="2">reserve amount:</Col>
-                        <Col md="3">
-                            <Form.Control type="number" name={"racket_"+racket.name} min="0" max={racket.count} />
-                        </Col>
-                    </Row>
-                );
-            }
-        }
-
-        let reserveShuttlecockSection = [];
-        if ( this.state.loadFinish && this.state.reserveShuttlecock){
-            for( let index in this.state.shuttlecocks ){
-                let shuttlecock = this.state.shuttlecocks[index];
-                reserveShuttlecockSection.push(
-                    <Row key={"row"+shuttlecock.name}>
-                        <Col md="3">{"name: "+shuttlecock.name}</Col>
-                        <Col md="2">{"price: " + shuttlecock.count_per_unit+" bath"}</Col>
-                        <Col md="2">{"in stock: " +shuttlecock.count}</Col>
-                        <Col md="2">reserve amount:</Col>
-                        <Col md="3">
-                            <Form.Control type="number" name={"racket_"+shuttlecock.name} min="0" max={shuttlecock.count} />
-                        </Col>
-                    </Row>
-                );
-            }
-        }
-
         let reserveSection;
         if ( this.state.loadFinish && this.state.court.is_verified ){
             reserveSection = (
@@ -310,15 +396,15 @@ class Court extends React.Component {
                     <Form onSubmit={this.handleReserve} className="mt-4">
                         <Form.Group className="row">
                             <Form.Label className="col-md-3">start time</Form.Label>
-                            <Form.Control className="col-md-5" name="start_time" type="time" onChange={this.handleChange}></Form.Control>
+                            <Form.Control value={this.mapTime(this.state.start_time)} disabled className="col-md-5" name="start_time" type="time" onChange={this.handleChange}></Form.Control>
                         </Form.Group>
                         <Form.Group className="row">
                             <Form.Label className="col-md-3">end time</Form.Label>
-                            <Form.Control className="col-md-5" name="end_time" type="time" onChange={this.handleChange}></Form.Control>
+                            <Form.Control value={this.mapTime(this.state.end_time)} disabled className="col-md-5" name="end_time" type="time" onChange={this.handleChange}></Form.Control>
                         </Form.Group>
                         <Form.Group className="row">
                             <Form.Label className="col-md-3">day of the week</Form.Label>
-                            <Form.Control name="day_of_the_week" className="col-md-5" as="select" onChange={this.handleChange}>
+                            <Form.Control value={this.state.day_of_the_week != -1 ? this.state.day_of_the_week : "1"} disabled={this.state.day_of_the_week_query > -1} name="day_of_the_week" className="col-md-5" as="select" onChange={this.handleChange}>
                                 <option value="1">monday</option>
                                 <option value="2">tuesday</option>
                                 <option value="3">wednesday</option>
@@ -329,7 +415,7 @@ class Court extends React.Component {
                             </Form.Control>
                         </Form.Group>
                         <hr className="my-4" />
-                        <h5 className="mb-4">Do you want to reserve rattles and buy shuttlecocks?</h5>
+                        {/* <h5 className="mb-4">Do you want to reserve rattles and buy shuttlecocks?</h5>
                         <Form.Group> 
                             <Form.Check type="checkbox" label="I want to reserve rackets." name="reserveRacket" onChange={this.handleCheckbox}/>
                             {reserveRacketSection}
@@ -337,7 +423,7 @@ class Court extends React.Component {
                         <Form.Group>
                             <Form.Check type="checkbox" label="I want to buy shuttlecocks." name="reserveShuttlecock" onChange={this.handleCheckbox}/>
                             {reserveShuttlecockSection}
-                        </Form.Group>
+                        </Form.Group> */}
                         <div className="text-right mt-3">
                             <button type="submit" className="btn btn-primary">reserve</button>
                         </div>
@@ -368,22 +454,22 @@ class Court extends React.Component {
             );
         }
 
-        // let mapSection;
-        // if ( this.state.loadFinish ){
-        //     mapSection = (
-        //         <div style={{width: "100%", height: "600px"}}>
-        //             <GoogleMapReact
-        //                 bootstrapURLKeys={{ key: gmApiKey }}
-        //                 defaultZoom={11}
-        //                 center={{lat: this.state.court.lat, lng: this.state.court.long}}
-        //                 yesIWantToUseGoogleMapApiInternals
-        //                 onGoogleApiLoaded={({ map, maps }) => this.handleApiLoaded(map, maps)}
-        //                 >
+        let mapSection;
+        if ( this.state.loadFinish ){
+            mapSection = (
+                <div style={{width: "100%", height: "600px"}}>
+                    <GoogleMapReact
+                        bootstrapURLKeys={{ key: gmApiKey }}
+                        defaultZoom={11}
+                        center={{lat: this.state.court.lat, lng: this.state.court.long}}
+                        yesIWantToUseGoogleMapApiInternals
+                        onGoogleApiLoaded={({ map, maps }) => this.handleApiLoaded(map, maps)}
+                        >
                             
-        //             </GoogleMapReact>
-        //         </div>
-        //     );
-        // }
+                    </GoogleMapReact>
+                </div>
+            );
+        }
 
         let rating = (
             <StarRatings
@@ -394,6 +480,61 @@ class Court extends React.Component {
                 name='rating'
             />
         );
+
+        let addRacketSection;
+        if ( this.state.loadFinish &&  this.isUserOwner() ){
+            addRacketSection = (
+                <div className="my-4 section-border">
+                    <h3>Add Racket to your Court</h3>
+                    <Form onSubmit={this.handleAddRacket}>
+                        <Form.Group>
+                            <Form.Label>racket name</Form.Label>
+                            <Form.Control type="text" name="racket_name" onChange={this.handleChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>price</Form.Label>
+                            <Form.Control type="number" min="0" max="999999" name="racket_price" onChange={this.handleChange} />
+                        </Form.Group>
+                        <div className="text-right">
+                            <button type="submit" className="btn btn-primary" disabled={this.state.uploading}>Add Rackets</button>
+                        </div>
+                    </Form>
+                </div>
+            );
+        }
+
+        let addShuttlecocksSection;
+        if ( this.state.loadFinish &&  this.isUserOwner() ){
+            addShuttlecocksSection = (
+                <div className="my-4 section-border">
+                    <h3>Add Shuttlecocks to your Court</h3>
+                    <Form onSubmit={this.handleAddShuttlecock}>
+                        <Form.Group>
+                            <Form.Label>shuttlecocks name</Form.Label>
+                            <Form.Control type="text" name="shuttlecock_name" onChange={this.handleChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>count</Form.Label>
+                            <Form.Control type="number" min="0" max="9999" name="shuttlecock_count" onChange={this.handleChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>count per unit</Form.Label>
+                            <Form.Control type="number" min="0" max="999999" name="shuttlecock_count_per_unit" onChange={this.handleChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>price</Form.Label>
+                            <Form.Control type="number" min="0" max="999999" name="shuttlecock_price" onChange={this.handleChange} />
+                        </Form.Group>
+                        <div className="text-right">
+                            <button type="submit" className="btn btn-primary" disabled={this.state.uploading}>Add Shuttlecocks</button>
+                        </div>
+                    </Form>
+                </div>
+            );
+        }
+
+        let ownerDivideLine = this.isUserOwner() ? <hr style={{marginTop: "5rem", marginBottom: "5rem",
+                     borderWidth: "5px", borderStyle: "dotted", borderTop: "none"}} /> : null;
 
         return (
             <div className="app-content-inner">
@@ -415,9 +556,17 @@ class Court extends React.Component {
                             <span>{this.state.court.owner.first_name + " " + this.state.court.owner.last_name}</span>
                         </div>
                     </div>
-                    {/* {mapSection} */}
+                    {mapSection}
                     {reserveSection}
+                    <div className="header-text-group my-1">
+                        <h5>Reviews</h5>
+                    </div>
+                    {reviews}
                     {addReviewSection}
+                    {ownerDivideLine}
+                    {this.isUserOwner() ? <h3 className="text-center">Court Management for Owner</h3> : null}
+                    {addRacketSection}
+                    {addShuttlecocksSection}
                     {addImageSection}
                 </div>  
             </div>
@@ -445,11 +594,14 @@ const mapDispatchToProps = dispatch => {
         bookCourt: (courtName, start, end, day_of_the_week) => {
             return dispatch(courtActions.bookCourt(courtName,start,end,day_of_the_week));
         },
-        loadRackets: () => {
-            return dispatch(courtActions.loadRackets());
+        addRacket: (courtName, name, price) => {
+            return dispatch(courtActions.addRacket(courtName,name,price));
         },
-        loadShuttlecock: () => {
-            return dispatch(courtActions.loadShuttlecock());
+        addShuttlecock: (courtName,name,count,count_per_unit,price) => {
+            return dispatch(courtActions.addShuttlecock(courtName,name,count,count_per_unit,price));
+        },
+        loadUser: (username) => {
+            return dispatch(authActions.loadUser(username));
         }
       };
 }

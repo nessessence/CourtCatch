@@ -82,16 +82,16 @@ class TopUp extends React.Component {
                             </Form.Group>
                         </Form>
                     </div>
-                    <p>or</p>
+                    {/* <p>or</p>
                     <div className="my-4">
                         <p>Withdraw your credit.</p>
                         <Form onSubmit={this.handleWithdraw}>
                             <Form.Group>
-                                <Form.Control onChange={this.handleChange} name="amountToWithdraw" className="mr-2" type="number" style={{width: "10em", display: "inline-block"}} value={this.state.amountToAdd}></Form.Control>
+                                <Form.Control onChange={this.handleChange} name="amountToWithdraw" className="mr-2" type="number" style={{width: "10em", display: "inline-block"}} value={this.state.amountToWithdraw}></Form.Control>
                                 <Button type="submit" className="btn btn-primary" disabled={this.state.loading}>Withdraw</Button>
                             </Form.Group>
                         </Form>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         );

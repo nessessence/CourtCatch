@@ -11,16 +11,32 @@ class Courts extends React.Component {
         super(props);
         this.state = {
             loadFinish: false,
-            courts: null
+            courts: null,
+            start_time: null,
+            end_time: null
         }
     }
 
     async componentDidMount() {
         let queryParams = this.props.location.search;
+        let arr = queryParams.split("&");
+        let start_time, end_time;
+
+        for(let i=0; i<arr.length; ++i){
+            if ( arr[i].includes("start_time") ){
+                start_time = arr[i].split("=")[1];
+            }
+            else if ( arr[i].includes("end_time") ){
+                end_time = arr[i].split("=")[1];
+            }
+        }
+
         let res = await this.props.searchCourts(queryParams);
         console.log(res);
         this.setState({
-            courts: res
+            courts: res,
+            start_time,
+            end_time
         });
     }
 
@@ -28,11 +44,14 @@ class Courts extends React.Component {
         console.log("courts render");
 
         let courtComponents = [];
+
+        let searchTime = "?start_time=" + this.state.start_time + "&end_time=" + 
+                this.state.end_time;
         
         for(let index in this.state.courts ){
             let court = this.state.courts[index];
             courtComponents.push(
-                <Link key={"link-"+court.name} to={"/booking/"+court.name+"/"} className="court-item-holder">
+                <Link key={"link-"+court.name} to={{ pathname:"/booking/"+court.name, search: searchTime}} className="court-item-holder">
                     <Card className="court-item">
                         <Row>
                             <Col sm="2">
