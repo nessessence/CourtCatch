@@ -46,9 +46,8 @@ class MyBookingList extends React.Component {
         for(let i=0; i<this.state.bookingList.length; ++i){
             let booking = this.state.bookingList[i];
             let court = booking.court;
-            bookingList.push(
-                <Link key={"link-"+court.name} to={"/my_booking/"+booking.id} className="court-item-holder">
-                    <Card className="court-item">
+            let card = (
+                <Card key={"card-"+i} className="court-item">
                         <Row>
                             <Col sm="2">
                                 <Card.Img variant="left" src={court.images[0] == null ? ImagePlaceholder : court.images[0].url} className="court-image"/>
@@ -65,13 +64,23 @@ class MyBookingList extends React.Component {
                                 </Card.Body>
                             </Col>
                             <Col sm="2" className="d-flex flex-column justify-content-between">
-                                <span className={court.is_verified ? "text-success" : "text-warning"}>{booking.is_active ? "active" : "inactive"}</span>
+                                <span className={court.is_verified ? "text-success" : "text-warning"}>{booking.is_active ? "เร็วๆนี้" : "ผ่านไปแล้ว"}</span>
                                 <span>rating: <span style={{color: "orange"}}>{court.avg_score.toFixed(1)}</span></span>
                             </Col>
                         </Row>
                     </Card>
-                </Link>
             );
+            if ( booking.is_active ){
+                bookingList.push(
+                    <Link key={"link-"+court.name} to={"/my_booking/"+booking.id} className="court-item-holder">
+                        {card}
+                    </Link>
+                );
+            }
+            else {
+                bookingList.push(card);
+            }
+            
         }
 
         return (

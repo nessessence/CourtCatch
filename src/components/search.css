@@ -1,0 +1,9 @@
+.speak-icon {
+    color: black;
+    font-size: 2rem;
+}
+
+.speak-icon:hover {
+    color: skyblue;
+    cursor: pointer;
+}

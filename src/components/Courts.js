@@ -65,7 +65,7 @@ class Courts extends React.Component {
                             </Col>
                             <Col sm="2" className="d-flex flex-column justify-content-between">
                                 <span className={court.is_verified ? "text-success" : "text-warning"}>{court.is_verified ? "verified" : "pending"}</span>
-                                <span>rating: <span style={{color: "orange"}}>{court.avg_score.toFixed(1)}</span></span>
+                                <span>rating: <span style={{color: "orange"}}>{court.reviews.length > 0 ? court.avg_score.toFixed(1) : "unrated"}</span></span>
                             </Col>
                         </Row>
                     </Card>

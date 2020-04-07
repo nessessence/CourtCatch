@@ -122,7 +122,7 @@ class MyBooking extends React.Component {
             window.location.reload();
         }
         catch(err){
-            alert("something went wrong, please try later.");
+            alert(err.response.data.message);
             console.error(err);
         }
         
@@ -138,7 +138,7 @@ class MyBooking extends React.Component {
             window.location.reload();
         }
         catch(err){
-            alert("something went wrong, please try again later.");
+            alert(err.response.data.message);
             console.error(err);
         }
     }
@@ -153,7 +153,7 @@ class MyBooking extends React.Component {
             window.location.reload();
         }
         catch(err){
-            alert("something went wrong, please try again later.");
+            alert(err.response.data.message);
             console.error(err);
         }
     }

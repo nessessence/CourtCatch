@@ -1,11 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {court as courtActions} from '../actions';
-import { Form, Row, Col } from 'react-bootstrap';
+import { Form, Row, Col, InputGroup, } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import { ReactMic } from 'react-mic';
 import { upload as uploadFileToS3 } from '../s3/index';
-import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMicrophone, faStop, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import './search.css';
 
 class Search extends React.Component {
     constructor(props){
@@ -23,7 +25,8 @@ class Search extends React.Component {
 
             record: false,
             shouldSetText: false,
-            speechText: ""
+            speechText: "",
+            loading_speech: false
         }
     }
 
@@ -95,8 +98,10 @@ class Search extends React.Component {
       }
     
       stopRecording = () => {
+          console.log("stop recorind");
         this.setState({
-          record: false
+          record: false,
+          loading_speech: true
         });
       }
     
@@ -129,13 +134,15 @@ class Search extends React.Component {
             console.log(transcript);
             this.setState({
                 shouldSetText: true,
-                speechText: transcript
+                speechText: transcript,
+                loading_speech: false
             })
         }
         catch(err){
             this.setState({
                 uploading: false,
-                shouldSetText: false
+                shouldSetText: false,
+                loading_speech: false
             })
             alert(err);
             console.error(err);
@@ -195,7 +202,7 @@ class Search extends React.Component {
             <div className="app-content-inner">
                 <div className="container">
                     <h1>Search</h1><br /><br /><br />
-                    <div>
+                    <div className="d-none">
                         <ReactMic
                         record={this.state.record}
                         className="sound-wave"
@@ -204,13 +211,14 @@ class Search extends React.Component {
                         strokeColor="#000000"
                         channelCount={1}
                         backgroundColor="#FF4081"/>
-                        <button  onClick={this.startRecording} type="button">Start</button>
-                        <button onClick={this.stopRecording} type="button">Stop</button>
                     </div>
                     <div className="d-inline-block text-right" style={{width: "500px"}}>
                         <Form.Group className="row">
                             <Form.Label className="col-md-5">Name</Form.Label>
-                            <Form.Control value={this.state.shouldSetText ? this.state.speechText : null} className="col-md-7" type="text" name="name" onChange={this.handleChange} placeholder="enter court name..."></Form.Control>
+                            <Form.Control className="col-md-6" value={this.state.shouldSetText ? this.state.speechText : null}type="text" name="name" onChange={this.handleChange} placeholder="enter court name..." />
+                            <FontAwesomeIcon className={"col-md-1 speak-icon" + (this.state.loading_speech ? " fa-spin" : "" )}
+                                icon={this.state.loading_speech ? faSpinner : (this.state.record? faStop : faMicrophone )}
+                                onClick={this.state.loading_speech ? null : (this.state.record? this.stopRecording : this.startRecording )} />
                         </Form.Group>
                         <Form.Group className="row">
                             <Form.Label className="col-md-5">min rating</Form.Label>
