@@ -106,7 +106,7 @@ export const loadUser = (username) => {
     return (dispatch, getState) => {
       let headers = {
           "Content-Type": "application/json",
-          "Authorization": "Token 9ea82d11991654e4b9221ff8559a53b2d9f758be"
+          "Authorization": "Token ba82d899728ca98c17b3024f42b459bf3eabe9cb"
          };
       let body = JSON.stringify({first_name, last_name, username, password, email, phone_number});
       console.log(body);

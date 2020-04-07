@@ -420,7 +420,7 @@ export const cancelCourt = (bookingID) => {
             return res.data;
         }
         catch(err){
-            console.log("error");
+            console.log(err);
             throw err;
         }
     }
