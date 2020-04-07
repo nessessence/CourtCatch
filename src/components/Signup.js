@@ -71,19 +71,23 @@ class Signup extends React.Component {
         this.validateForm();
         console.log('sign up');
         if ( this.isFormValid() ){
-            let res = await this.props.register(this.state.firstname, this.state.lastname, this.state.username, this.state.password, this.state.email, this.state.phone);
-            if ( res ){
+            try{
+                let res = await this.props.register(this.state.firstname, this.state.lastname, this.state.username, this.state.password, this.state.email, this.state.phone);
                 // this.closeSignupModal();
                 // await this.props.loadUser(this.state.username);
                 console.log('register successful');
                 this.setState({
                     signUpSuccess: true
-                })
+                });
             }
-            else {
-                alert('something wrong');
+            catch(err){
+                console.error(err);
+                alert(err.message);
             }
+     
         }
+
+       
     }
 
     isFormValid = () => {
