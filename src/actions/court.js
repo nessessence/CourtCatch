@@ -373,7 +373,6 @@ export const cancelRacket = (racketID) => {
             return res.data;
         }
         catch(err){
-            console.log("error");
             throw err;
         }
     }
