@@ -109,7 +109,7 @@ class MyBooking extends React.Component {
             }
         }
         if ( toBuyShuttlecocks.length === 0 ){
-            alert("please enter shuttlecock amount");
+            alert("please enter shuttlecock amount...");
             return;
         }
 
