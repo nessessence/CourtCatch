@@ -13,14 +13,15 @@ class Courts extends React.Component {
             loadFinish: false,
             courts: null,
             start_time: null,
-            end_time: null
+            end_time: null,
+            day_of_the_week: null
         }
     }
 
     async componentDidMount() {
         let queryParams = this.props.location.search;
         let arr = queryParams.split("&");
-        let start_time, end_time;
+        let start_time, end_time, day_of_the_week;
 
         for(let i=0; i<arr.length; ++i){
             if ( arr[i].includes("start_time") ){
@@ -29,6 +30,9 @@ class Courts extends React.Component {
             else if ( arr[i].includes("end_time") ){
                 end_time = arr[i].split("=")[1];
             }
+            else if ( arr[i].includes("day_of_the_week") ){
+                day_of_the_week = arr[i].split("=")[1];
+            }
         }
 
         let res = await this.props.searchCourts(queryParams);
@@ -36,7 +40,8 @@ class Courts extends React.Component {
         this.setState({
             courts: res,
             start_time,
-            end_time
+            end_time,
+            day_of_the_week
         });
     }
 
@@ -46,7 +51,7 @@ class Courts extends React.Component {
         let courtComponents = [];
 
         let searchTime = "?start_time=" + this.state.start_time + "&end_time=" + 
-                this.state.end_time;
+                this.state.end_time + "&day_of_the_week=" + this.state.day_of_the_week;
         
         for(let index in this.state.courts ){
             let court = this.state.courts[index];

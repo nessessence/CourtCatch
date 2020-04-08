@@ -72,7 +72,7 @@ class MyBookingList extends React.Component {
             );
             if ( booking.is_active ){
                 bookingList.push(
-                    <Link key={"link-"+court.name} to={"/my_booking/"+booking.id} className="court-item-holder">
+                    <Link key={"link-"+i} to={"/my_booking/"+booking.id} className="court-item-holder">
                         {card}
                     </Link>
                 );

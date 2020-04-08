@@ -323,7 +323,7 @@ class MyBooking extends React.Component {
                         </div>
                     </div>
                     <div className="section-border text-right">
-                        <button className="btn btn-danger" onClick={this.handleCancelCourt}>Cancel Court Reservation</button>
+                        <button disabled={this.state.requesting } className="btn btn-danger" onClick={this.handleCancelCourt}>Cancel Court Reservation</button>
                     </div>
                 </div>
             </div>

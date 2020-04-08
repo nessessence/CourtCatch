@@ -88,7 +88,6 @@ class Court extends React.Component {
         if ( this.isReviewFormValid() ){
             try{
                 let res = await this.props.reviewCourt(this.state.courtName, this.state.score, this.state.review);
-                alert("court reviewed");
                 window.location.reload();
             }
             catch(err){
@@ -211,13 +210,20 @@ class Court extends React.Component {
             return;
           }
 
-          let res = await this.props.bookCourt(this.state.courtName,this.state.start_time,this.state.end_time,this.state.day_of_the_week);
-          console.log(res.booking_id);
-          alert("reserve success");
-          this.setState({
-              shouldRedirect: true,
-              booking_id: res.booking_id
-          });
+          try {
+              let res = await this.props.bookCourt(this.state.courtName,this.state.start_time,this.state.end_time,this.state.day_of_the_week);
+            console.log(res.booking_id);
+            alert("reserve success");
+
+            this.setState({
+                shouldRedirect: true,
+                booking_id: res.booking_id
+            });
+          }catch(err){
+              alert(err.response.data.message);
+              console.error(err.response);
+          }
+          
       }
 
       handleApiLoaded = (map, maps) => {
@@ -328,7 +334,7 @@ class Court extends React.Component {
             for(let i=0; i<this.state.court.reviews.length; ++i){
                 let review = this.state.court.reviews[i];
                 reviews.push(
-                    <div className="section-border d-flex flex-column my-1">
+                    <div key={"review-holder"+i} className="section-border d-flex flex-column my-1">
                         <StarRatings rating={review.score} starDimension="15px" numberOfStars={5} starRatedColor="orange" />
                         <span>{review.review}</span>
                     </div>
@@ -404,7 +410,7 @@ class Court extends React.Component {
                         </Form.Group>
                         <Form.Group className="row">
                             <Form.Label className="col-md-3">day of the week</Form.Label>
-                            <Form.Control value={this.state.day_of_the_week != -1 ? this.state.day_of_the_week : "1"} disabled={this.state.day_of_the_week_query > -1} name="day_of_the_week" className="col-md-5" as="select" onChange={this.handleChange}>
+                            <Form.Control value={this.state.day_of_the_week_query != -1 ? this.state.day_of_the_week_query : null} disabled={this.state.day_of_the_week_query > -1} name="day_of_the_week" className="col-md-5" as="select" onChange={this.handleChange}>
                                 <option value="1">monday</option>
                                 <option value="2">tuesday</option>
                                 <option value="3">wednesday</option>
@@ -602,7 +608,10 @@ const mapDispatchToProps = dispatch => {
         },
         loadUser: (username) => {
             return dispatch(authActions.loadUser(username));
-        }
+        },
+        getUserInfo: (username) => {
+            return dispatch(authActions.getUserInfo(username));
+        },
       };
 }
 

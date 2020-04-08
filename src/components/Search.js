@@ -15,8 +15,8 @@ class Search extends React.Component {
         this.state = {
             name: "",
             rating: 0.0,
-            start_time: "12",
-            end_time: "46",
+            start_time: "18",
+            end_time: "24",
             searchByLocation: false,
             searchByName: false,
             lat: "",
@@ -75,6 +75,9 @@ class Search extends React.Component {
     }
 
     handleChange = e => {
+        this.setState({
+            shouldSetText: false
+        })
         const { name,value } = e.target
         if ( name == "start_time" || name === "end_time" ){
             let res = value.split(":");
@@ -130,7 +133,7 @@ class Search extends React.Component {
             console.log(data.location);
             let url = data.location;
             let res = await this.props.callSpeech(url, this.props.user.username);
-            let transcript = res.transcript;
+            let transcript = res.transcript.trim();
             console.log(transcript);
             this.setState({
                 shouldSetText: true,
@@ -215,7 +218,7 @@ class Search extends React.Component {
                     <div className="d-inline-block text-right" style={{width: "500px"}}>
                         <Form.Group className="row">
                             <Form.Label className="col-md-5">Name</Form.Label>
-                            <Form.Control className="col-md-6" value={this.state.shouldSetText ? this.state.speechText : null}type="text" name="name" onChange={this.handleChange} placeholder="enter court name..." />
+                            <Form.Control className="col-md-6" value={this.state.shouldSetText ? this.state.speechText : null} type="text" name="name" onChange={this.handleChange} placeholder="enter court name..." />
                             <FontAwesomeIcon className={"col-md-1 speak-icon" + (this.state.loading_speech ? " fa-spin" : "" )}
                                 icon={this.state.loading_speech ? faSpinner : (this.state.record? faStop : faMicrophone )}
                                 onClick={this.state.loading_speech ? null : (this.state.record? this.stopRecording : this.startRecording )} />
@@ -226,11 +229,11 @@ class Search extends React.Component {
                         </Form.Group>
                         <Form.Group className="row">
                             <Form.Label className="col-md-5">start time</Form.Label>
-                            <Form.Control className="col-md-7" max="24" min="0" type="time" name="start_time" onChange={this.handleChange} defaultValue="06:00"></Form.Control>
+                            <Form.Control className="col-md-7" max="24" min="0" type="time" name="start_time" onChange={this.handleChange} defaultValue="09:00"></Form.Control>
                         </Form.Group>
                         <Form.Group className="row">
                             <Form.Label className="col-md-5">end time</Form.Label>
-                            <Form.Control className="col-md-7" max="24" min="0" type="time" name="end_time" onChange={this.handleChange} defaultValue="23:59"></Form.Control>
+                            <Form.Control className="col-md-7" max="24" min="0" type="time" name="end_time" onChange={this.handleChange} defaultValue="12:00"></Form.Control>
                         </Form.Group>
                         <Form.Group className="row">
                             <Form.Label className="col-md-5">day of the week</Form.Label>

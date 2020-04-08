@@ -10,8 +10,17 @@ class TopUp extends React.Component {
         this.state = {
             amountToAdd: 0,
             amountToWithdraw: 0,
-            loading: false
+            loading: false,
+            credit: null
         }
+    }
+
+    async componentDidMount(){
+        let res = await this.props.getUserInfo(this.props.user.username);
+        console.log(res);
+        this.setState({
+            credit: res.credit
+        });
     }
 
     handleChange = e => {
@@ -71,7 +80,7 @@ class TopUp extends React.Component {
             <div className="app-content-inner">
                 <div className="container">
                     <p>Your Credit</p>
-                    <h3>{this.props.user.credit + " Bath"}</h3>
+                    <h3>{this.state.credit + " Bath"}</h3>
                     <br />
                     <div className="my-4">
                         <p>Wanna top up some money to your pocket?</p>
@@ -108,6 +117,9 @@ const mapDispatchToProps = dispatch => {
     return {
         addCredit: (amount) => {
           return dispatch(auth.addCredit(amount));
+        },
+        getUserInfo: (username) => {
+            return dispatch(auth.getUserInfo(username));
         },
       };
 }
