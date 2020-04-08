@@ -191,7 +191,7 @@ class MyBooking extends React.Component {
                 <div style={{position: "fixed", left: "50%", top: "50%"}}>
                     <ReactLoading type="spin" color="white" height={'50%'} width={'50%'} />
                 </div>
-            ); 
+            );    
         }
 
           let reserveRacketSection = [];
