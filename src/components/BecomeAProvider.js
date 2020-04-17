@@ -4,6 +4,10 @@ import './become_a_provider.css';
 import ImagePlaceholder from "../images/imagePlaceholder.jpg";
 import FrontCID from '../images/frontCID.jpg';
 import FaceWithCID from '../images/faceWithCID.jpg';
+import { court as CourtActions } from '../actions';
+import { connect } from 'react-redux';
+import {upload as uploadFileToS3} from '../s3';
+
 
 class BecomeAProvider extends React.Component {
     constructor(props){
@@ -33,8 +37,14 @@ class BecomeAProvider extends React.Component {
                 resgisteredAddress: "",
                 photoHoldingCID: "",
                 photoHoldingIC: ""
-            }
+            },
+
+            isSubmitting: false
         }
+    }
+
+    async componentDidMount(){
+
     }
 
     openModal = () => {
@@ -56,12 +66,44 @@ class BecomeAProvider extends React.Component {
         })
     }
 
-    handleSubmit = e => {
+    handleSubmit = async e => {
         e.preventDefault();
         this.validateForm();
 
         if ( this.isFormValid() ){
+            this.setState({
+                isSubmitting: true
+            });
 
+            try{
+
+                let cidres = await uploadFileToS3(this.state.photoHoldingCID, this.props.user.username + "_cid_" + (new Date()).getTime(), "bap_docs");
+                let holdCIDUrl = cidres.location;
+                console.log("uploaded cid photo");
+                let icres = await uploadFileToS3(this.state.photoHoldingIC, this.props.user.username + "_ic_" + (new Date()).getTime(), "bap_docs");
+                let holdingICUrl = icres.location;
+                console.log("uploaded ic photo");
+
+                await this.props.callBecomeAProvider({
+                    thai_first_name: this.state.thaiFirstName,
+                    thai_last_name: this.state.thaiLastName,
+                    date_of_birth: this.state.dob,
+                    cid: this.state.cid,
+                    cbid: this.state.cbid,
+                    current_occupation: this.state.occupation,
+                    residential_address: this.state.residentialAddress,
+                    registered_address: this.state.resgisteredAddress,
+                    holding_cid_url: holdCIDUrl,
+                    ic_url: holdingICUrl
+                });
+
+                alert("success");
+                window.location.reload();
+            }
+            catch(err){
+                alert("something went wrong, please try again later.");
+                console.error(err)
+            }
         }
     }
 
@@ -124,6 +166,17 @@ class BecomeAProvider extends React.Component {
       }
 
     render(){
+
+        if ( !this.props.user.is_verified && this.props.user.documents.length > 0 ){
+            return (
+                <div className="app-content-inner">
+                    <div className="container">
+                        <h1>You have already submitted the form. Your form will soon be checked.</h1>
+                    </div>
+                </div>
+            );
+        }
+
         return (
             <div className="app-content-inner">
                 <div className="container">
@@ -220,4 +273,19 @@ class BecomeAProvider extends React.Component {
     }
 }
 
-export default BecomeAProvider;
+
+const mapStateToProps = state => {
+    return {
+        user: state.auth.user
+    };
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        callBecomeAProvider: (data) => {
+            return dispatch(CourtActions.callBecomeAProvider(data));
+        },
+      };
+}
+  
+export default connect(mapStateToProps, mapDispatchToProps)(BecomeAProvider);

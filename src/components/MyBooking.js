@@ -250,8 +250,12 @@ class MyBooking extends React.Component {
             );
         }
 
-        if ( reservedRackets.length === 0 && orderedShuttlecocks.length === 0 ){
-            reservedRackets = <p className="text-secondary">no racket reservation and shuttlecock order.</p>
+        if ( reservedRackets.length === 0  ){
+            reservedRackets = <p className="text-secondary">no racket reservation.</p>
+        }
+
+        if ( orderedShuttlecocks.length === 0  ){
+            orderedShuttlecocks = <p className="text-secondary">no shuttlecock order.</p>
         }
 
         return (

@@ -27,6 +27,8 @@ import Courts from './components/Courts';
 import TopUp from './components/TopUp';
 import MyBookingList from './components/MyBookingList';
 import MyBooking from './components/MyBooking';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 let store = createStore(myApp, applyMiddleware(thunk));
 
@@ -38,6 +40,10 @@ class RootContainerComponent extends React.Component {
       tempUsername: null
     }
   
+  }
+
+  componentDidMount(){
+    AOS.init();
   }
   
   async componentWillMount(){

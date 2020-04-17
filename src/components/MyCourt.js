@@ -46,14 +46,15 @@ class MyCourt extends React.Component {
                 <Link key={"link-"+court.name} to={"/booking/"+court.name+"/"} className="court-item-holder">
                     <Card className="court-item">
                         <Row>
-                            <Col sm="2">
+                            <Col sm="5">
                                 <Card.Img variant="left" src={court.images[0] == null ? ImagePlaceholder : court.images[0].url} className="court-image"/>
                             </Col>
-                            <Col sm="8">
-                                <Card.Body className="text-left">
-                                    <Card.Title>{court.name}</Card.Title>
-                                    <Card.Text className="court-desc">{court.desc}</Card.Text>
-                                </Card.Body>
+                            <Col sm="5" className="text-left d-flex flex-column justify-content-between">
+                                <div style={{marginTop: "10px"}}>
+                                    <h4>{court.name}</h4>
+                                    <p className="court-desc text-secondary">{court.desc}</p>
+                                </div>
+                                <p className=" text-secondary">{court.price} bath/hr</p>
                             </Col>
                             <Col sm="2" className="d-flex flex-column justify-content-between">
                                 <span className={court.is_verified ? "text-success" : "text-warning"}>{court.is_verified ? "verified" : "pending"}</span>

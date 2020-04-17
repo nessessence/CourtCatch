@@ -167,8 +167,6 @@ export const searchCourts = (queryParams) => {
 export const bookCourt = (courtName,start,end,day_of_the_week) => {
     return async(dispatch, getState) => {
         const token = getState().auth.token;
-        start = 12;
-        end = 14;
 
         let config = {
             headers: {
@@ -439,9 +437,37 @@ export const callSpeech = (url,username) => {
             }
         }
 
-        let apiUrl = "http://localhost:8000/api/shuttlecock/";
+        let apiUrl = "http://localhost:8000/api/speech/";
         try{
             let res = await axios.post(apiUrl,{url,username}, config);
+            return res.data;
+        }
+        catch(err){
+            console.log("error");
+            throw err;
+        }
+    }
+}
+
+
+// 'thai_first_name', 'thai_last_name',
+//'date_of_birth', 'cid', 'cbid', 'current_occupation', 'residential_address', 'registered_address',
+//'holding_cid_url', 'ic_url'
+export const  callBecomeAProvider = (data) =>{
+    return async(dispatch, getState) => {
+        const token = getState().auth.token;
+
+
+        let config = {
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': 'Token '+token
+            }
+        }
+
+        let apiUrl = "http://localhost:8000/api/document/";
+        try{
+            let res = await axios.post(apiUrl,{...data}, config);
             return res.data;
         }
         catch(err){

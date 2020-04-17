@@ -6,7 +6,7 @@ const  weekdays = {
     "4": "thursday",
     "5": "friday",
     "6": "saturday",
-    "7": "sunday",
+    "0": "sunday",
 }
 
 export default weekdays;

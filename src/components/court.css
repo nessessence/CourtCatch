@@ -26,3 +26,7 @@
     padding: 15px;
     border-radius: 1rem;
 }
+
+#court-content-inner {
+    background-color: white;
+}

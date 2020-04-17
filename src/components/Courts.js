@@ -1,7 +1,7 @@
 import React from 'react'
 import {court} from '../actions';
 import { connect } from 'react-redux';
-import './mycourt.css';
+import './courts.css';
 import { Card, Col, Row } from 'react-bootstrap';
 import ImagePlaceholder from '../images/imagePlaceholder.jpg';
 import { Link } from 'react-router-dom';
@@ -58,15 +58,16 @@ class Courts extends React.Component {
             courtComponents.push(
                 <Link key={"link-"+court.name} to={{ pathname:"/booking/"+court.name, search: searchTime}} className="court-item-holder">
                     <Card className="court-item">
-                        <Row>
-                            <Col sm="2">
+                        <Row style={{height: "100%"}}>
+                            <Col sm="5">
                                 <Card.Img variant="left" src={court.images[0] == null ? ImagePlaceholder : court.images[0].url} className="court-image"/>
                             </Col>
-                            <Col sm="8">
-                                <Card.Body className="text-left">
-                                    <Card.Title>{court.name}</Card.Title>
-                                    <Card.Text className="court-desc">{court.desc}</Card.Text>
-                                </Card.Body>
+                            <Col sm="5" className="text-left d-flex flex-column justify-content-between">
+                                <div style={{marginTop: "10px"}}>
+                                    <h4>{court.name}</h4>
+                                    <p className="court-desc text-secondary">{court.desc}</p>
+                                </div>
+                                <p className=" text-secondary">{court.price} bath/hr</p>
                             </Col>
                             <Col sm="2" className="d-flex flex-column justify-content-between">
                                 <span className={court.is_verified ? "text-success" : "text-warning"}>{court.is_verified ? "verified" : "pending"}</span>

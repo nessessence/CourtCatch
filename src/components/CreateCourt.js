@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {court} from '../actions';
-import { Form, Modal } from 'react-bootstrap';
+import { Form, Modal, Spinner } from 'react-bootstrap';
 import GoogleMapReact from 'google-map-react';
 import Marker from './Marker';
 import { Redirect } from 'react-router-dom';
@@ -213,9 +213,9 @@ class CreateCourt extends React.Component {
                             </div>
                             </Form.Group>
                         <div className="text-right">
-                            {/* <button type="submit" className="gradient-button">
-                                <span className="gradient-text">SUBMIT</span>
-                            </button> */}
+                            {this.state.isSubmiting ? (<Spinner className="mx-3" animation="border" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </Spinner>) : null}
                             <button className="btn btn-primary" disabled={this.state.isSubmiting}>Add</button>
                         </div>
                     </Form>

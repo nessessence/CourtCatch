@@ -31,16 +31,7 @@ class Search extends React.Component {
     }
 
     async componentDidMount(){
-        // try{
-        //     let courts = await this.props.loadCourts();
-        //     this.setState({
-        //         courts: courts
-        //     })
-        // }
-        // catch(err){
-        //     alert(err)
-        // }
-        
+        // AOS.init();
     }
 
     handleSearchByLocation =  () => {
@@ -152,31 +143,6 @@ class Search extends React.Component {
         }
     }
 
-    //   doSpeechRec = async () => {
-    //     const audioBytes = this.state.wavFile.toString('base64');
-      
-    //     // The audio file's encoding, sample rate in hertz, and BCP-47 language code
-    //     const audio = {
-    //       content: audioBytes,
-    //     };
-    //     const config = {
-    //       encoding: 'LINEAR16',
-    //       sampleRateHertz: 44100,
-    //       languageCode: 'th-TH',
-    //     };
-    //     const request = {
-    //       audio: audio,
-    //       config: config,
-    //     };
-      
-    //     // Detects speech in the audio file
-    //     const [response] = await client.recognize(request);
-    //     const transcription = response.results
-    //       .map(result => result.alternatives[0].transcript)
-    //       .join('\n');
-    //     console.log(`Transcription: ${transcription}`);
-    //   }
-
     render(){
 
         if ( this.state.searchByLocation ){
@@ -202,9 +168,8 @@ class Search extends React.Component {
         }
 
         return (
-            <div className="app-content-inner">
-                <div className="container">
-                    <h1>Search</h1><br /><br /><br />
+            <div className="app-content-inner" id="content-holder">
+                <div>
                     <div className="d-none">
                         <ReactMic
                         record={this.state.record}
@@ -215,46 +180,51 @@ class Search extends React.Component {
                         channelCount={1}
                         backgroundColor="#FF4081"/>
                     </div>
-                    <div className="d-inline-block text-right" style={{width: "500px"}}>
-                        <Form.Group className="row">
-                            <Form.Label className="col-md-5">Name</Form.Label>
-                            <Form.Control className="col-md-6" value={this.state.shouldSetText ? this.state.speechText : null} type="text" name="name" onChange={this.handleChange} placeholder="enter court name..." />
-                            <FontAwesomeIcon className={"col-md-1 speak-icon" + (this.state.loading_speech ? " fa-spin" : "" )}
-                                icon={this.state.loading_speech ? faSpinner : (this.state.record? faStop : faMicrophone )}
-                                onClick={this.state.loading_speech ? null : (this.state.record? this.stopRecording : this.startRecording )} />
-                        </Form.Group>
-                        <Form.Group className="row">
-                            <Form.Label className="col-md-5">min rating</Form.Label>
-                            <Form.Control className="col-md-7" max="5" min="0" type="number" name="rating" onChange={this.handleChange} placeholder="1.0" defaultValue={this.state.rating}></Form.Control>
-                        </Form.Group>
-                        <Form.Group className="row">
-                            <Form.Label className="col-md-5">start time</Form.Label>
-                            <Form.Control className="col-md-7" max="24" min="0" type="time" name="start_time" onChange={this.handleChange} defaultValue="09:00"></Form.Control>
-                        </Form.Group>
-                        <Form.Group className="row">
-                            <Form.Label className="col-md-5">end time</Form.Label>
-                            <Form.Control className="col-md-7" max="24" min="0" type="time" name="end_time" onChange={this.handleChange} defaultValue="12:00"></Form.Control>
-                        </Form.Group>
-                        <Form.Group className="row">
-                            <Form.Label className="col-md-5">day of the week</Form.Label>
-                            <Form.Control name="day_of_the_week" className="col-md-7" as="select" onChange={this.handleChange}>
-                                <option value="-1" defaultValue>any</option>
-                                <option value="1">monday</option>
-                                <option value="2">tuesday</option>
-                                <option value="3">wednesday</option>
-                                <option value="4">thrusday</option>
-                                <option value="5">friday</option>
-                                <option value="6">saturday</option>
-                                <option value="0">sunday</option>
-                            </Form.Control>
-                        </Form.Group>
-                        <div className="text-right">
-                            <button className="btn btn-primary" onClick={this.handleSearchByName}>search</button>
-                            <span className="mx-3">or</span>
-                            <button className="btn btn-primary" onClick={this.handleSearchByLocation}>search by my location</button>
+                    <div className="search-control">
+                        <img className="search-background" src={require("../images/court3.jpg")} />
+                        <div className="text-right search-form">
+                            <h1 data-aos="fade-up">Looking For A Court?</h1>
+                            <div data-aos="fade-up" className="search-form-input col-md-6">
+                                <Form.Group className="row">
+                                    <Form.Label className="col-md-4">Name</Form.Label>
+                                    <Form.Control className="col-md-6" value={this.state.shouldSetText ? this.state.speechText : ""} type="text" name="name" onChange={this.handleChange} placeholder="enter court name..." />
+                                    <FontAwesomeIcon className={"ml-1 speak-icon" + (this.state.loading_speech ? " fa-spin" : "" )}
+                                        icon={this.state.loading_speech ? faSpinner : (this.state.record? faStop : faMicrophone )}
+                                        onClick={this.state.loading_speech ? null : (this.state.record? this.stopRecording : this.startRecording )} />
+                                </Form.Group>
+                                <Form.Group className="row">
+                                    <Form.Label className="col-md-4">min rating</Form.Label>
+                                    <Form.Control className="col-md-6" max="5" min="0" type="number" name="rating" onChange={this.handleChange} placeholder="1.0" defaultValue={this.state.rating}></Form.Control>
+                                </Form.Group>
+                                <Form.Group className="row">
+                                    <Form.Label className="col-md-4">start time</Form.Label>
+                                    <Form.Control className="col-md-6" max="24" min="0" type="time" name="start_time" onChange={this.handleChange} defaultValue="09:00"></Form.Control>
+                                </Form.Group>
+                                <Form.Group className="row">
+                                    <Form.Label className="col-md-4">end time</Form.Label>
+                                    <Form.Control className="col-md-6" max="24" min="0" type="time" name="end_time" onChange={this.handleChange} defaultValue="12:00"></Form.Control>
+                                </Form.Group>
+                                <Form.Group className="row">
+                                    <Form.Label className="col-md-4">day of the week</Form.Label>
+                                    <Form.Control name="day_of_the_week" className="col-md-6" as="select" onChange={this.handleChange}>
+                                        <option value="-1" defaultValue>any</option>
+                                        <option value="1">monday</option>
+                                        <option value="2">tuesday</option>
+                                        <option value="3">wednesday</option>
+                                        <option value="4">thrusday</option>
+                                        <option value="5">friday</option>
+                                        <option value="6">saturday</option>
+                                        <option value="0">sunday</option>
+                                    </Form.Control>
+                                </Form.Group>
+                                <div className="text-right">
+                                    <button className="btn btn-primary" onClick={this.handleSearchByName}>search</button>
+                                    <span className="mx-3">or</span>
+                                    <button className="btn btn-primary" onClick={this.handleSearchByLocation}>search by my location</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    
                 </div>
             </div>
         );

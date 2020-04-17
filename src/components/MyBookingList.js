@@ -4,7 +4,7 @@ import weekdays from '../constants/weekdays';
 import { Link } from 'react-router-dom';
 import { Col, Row, Card } from 'react-bootstrap';
 import ImagePlaceholder from '../images/imagePlaceholder.jpg';
-import './mycourt.css';
+import './courts.css';
 
 class MyBookingList extends React.Component {
     constructor(props){
@@ -49,17 +49,17 @@ class MyBookingList extends React.Component {
             let card = (
                 <Card key={"card-"+i} className="court-item">
                         <Row>
-                            <Col sm="2">
+                            <Col sm="5">
                                 <Card.Img variant="left" src={court.images[0] == null ? ImagePlaceholder : court.images[0].url} className="court-image"/>
                             </Col>
-                            <Col sm="8">
+                            <Col sm="5">
                                 <Card.Body className="text-left">
                                     <Card.Title>{court.name}</Card.Title>
-                                    <Card.Text className="court-desc">
-                                        <span className="mr-3">{weekdays[booking.day_of_the_week]}</span>
-                                        <span className="mx-3">{this.mapTime(booking.start)+"-"+this.mapTime(booking.end)}</span>
-                                        <span className="mx-3">{ "court number: " + booking.court_number}</span>
-                                        <span className="mx-3">{booking.price + " bath"}</span>
+                                    <Card.Text className="court-desc d-flex flex-column">
+                                        <span className="text-secondary">{weekdays[booking.day_of_the_week]}</span>
+                                        <span className="text-secondary">{this.mapTime(booking.start)+"-"+this.mapTime(booking.end)}</span>
+                                        <span className="text-secondary">{ "court number: " + booking.court_number}</span>
+                                        <span className="text-secondary">{booking.price + " bath"}</span>
                                     </Card.Text>
                                 </Card.Body>
                             </Col>

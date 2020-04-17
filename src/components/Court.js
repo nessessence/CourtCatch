@@ -9,6 +9,8 @@ import GoogleMapReact from 'google-map-react';
 import { gmApiKey} from '../private/keys';
 import StarRatings from 'react-star-ratings';
 import { Redirect } from 'react-router-dom';
+import ImageGallery from 'react-image-gallery';
+
 
 class Court extends React.Component {
     constructor(props){
@@ -39,7 +41,9 @@ class Court extends React.Component {
             shuttlecock_price: "",
 
             shouldRedirect: false,
-            booking_id: null
+            booking_id: null,
+
+            galleryImages: null
         
         }
     }
@@ -68,12 +72,19 @@ class Court extends React.Component {
 
         try {
             let court = await this.props.loadCourt(this.state.courtName);
+
+            let galleryImages = [];
+            for(let image of court.images){
+                galleryImages.push({
+                    original: image.url,
+                    thumbnail: image.url
+                });
+            }
  
             this.setState({
                 loadFinish: true,
                 court: court,
-                // rackets: rackets,
-                // shuttlecocks: shuttlecocks
+                galleryImages: galleryImages
             })
         }   
         catch(err){
@@ -386,7 +397,7 @@ class Court extends React.Component {
                         </Form.Group>
                         {this.state.imagePreviewUrl === "" ? null : <img src={this.state.imagePreviewUrl}/>}
                         <div className="text-center">
-                            <button type="submit" className="btn btn-primary" disabled={this.state.uploading}>Upload</button>
+                            <button type="submit" className="btn btn-primary my-3" disabled={this.state.uploading}>Upload</button>
                         </div>
                     </Form>
                 </div>
@@ -410,7 +421,7 @@ class Court extends React.Component {
                         </Form.Group>
                         <Form.Group className="row">
                             <Form.Label className="col-md-3">day of the week</Form.Label>
-                            <Form.Control value={this.state.day_of_the_week_query != -1 ? this.state.day_of_the_week_query : null} disabled={this.state.day_of_the_week_query > -1} name="day_of_the_week" className="col-md-5" as="select" onChange={this.handleChange}>
+                            <Form.Control value={this.state.day_of_the_week_query != -1 ? this.state.day_of_the_week_query : "0"} disabled={this.state.day_of_the_week_query > -1} name="day_of_the_week" className="col-md-5" as="select" onChange={this.handleChange}>
                                 <option value="1">monday</option>
                                 <option value="2">tuesday</option>
                                 <option value="3">wednesday</option>
@@ -543,7 +554,7 @@ class Court extends React.Component {
                      borderWidth: "5px", borderStyle: "dotted", borderTop: "none"}} /> : null;
 
         return (
-            <div className="app-content-inner">
+            <div className="app-content-inner"  id="court-content-inner">
                 <div className="container text-left">
                     <div className="header-text-group">
                         <h1>{this.state.court.name}</h1>
@@ -551,6 +562,7 @@ class Court extends React.Component {
                     </div>
                     <div className="text-center court-corousel-holder">
                         {courtCarousel}
+                        {/* <ImageGallery items={this.state.galleryImages} /> */}
                     </div>
                     {/* <p>rating: <span style={{color: "orange"}}>{this.state.court.avg_score.toFixed(1)}</span></p> */}
                     <div className="my-3 d-flex flex-row justify-content-between">
