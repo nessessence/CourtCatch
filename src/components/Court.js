@@ -421,7 +421,7 @@ class Court extends React.Component {
                         </Form.Group>
                         <Form.Group className="row">
                             <Form.Label className="col-md-3">day of the week</Form.Label>
-                            <Form.Control value={this.state.day_of_the_week_query != -1 ? this.state.day_of_the_week_query : "0"} disabled={this.state.day_of_the_week_query > -1} name="day_of_the_week" className="col-md-5" as="select" onChange={this.handleChange}>
+                            <Form.Control value={this.state.day_of_the_week_query != -1 ? this.state.day_of_the_week_query : "6"} disabled={this.state.day_of_the_week_query > -1} name="day_of_the_week" className="col-md-5" as="select" onChange={this.handleChange}>
                                 <option value="1">monday</option>
                                 <option value="2">tuesday</option>
                                 <option value="3">wednesday</option>
