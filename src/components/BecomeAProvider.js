@@ -101,7 +101,7 @@ class BecomeAProvider extends React.Component {
                 window.location.reload();
             }
             catch(err){
-                alert("something went wrong, please try again later.");
+                alert(err.response.data.message);
                 console.error(err)
             }
         }

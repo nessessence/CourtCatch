@@ -187,7 +187,7 @@ class Search extends React.Component {
                             <div data-aos="fade-up" className="search-form-input col-md-6">
                                 <Form.Group className="row">
                                     <Form.Label className="col-md-4">Name</Form.Label>
-                                    <Form.Control className="col-md-6" value={this.state.shouldSetText ? this.state.speechText : ""} type="text" name="name" onChange={this.handleChange} placeholder="enter court name..." />
+                                    <Form.Control className="col-md-6" value={this.state.shouldSetText ? this.state.speechText : this.state.name} type="text" name="name" onChange={this.handleChange} placeholder="enter court name..." />
                                     <FontAwesomeIcon className={"ml-1 speak-icon" + (this.state.loading_speech ? " fa-spin" : "" )}
                                         icon={this.state.loading_speech ? faSpinner : (this.state.record? faStop : faMicrophone )}
                                         onClick={this.state.loading_speech ? null : (this.state.record? this.stopRecording : this.startRecording )} />
@@ -208,13 +208,13 @@ class Search extends React.Component {
                                     <Form.Label className="col-md-4">day of the week</Form.Label>
                                     <Form.Control name="day_of_the_week" className="col-md-6" as="select" onChange={this.handleChange}>
                                         <option value="-1" defaultValue>any</option>
-                                        <option value="1">monday</option>
-                                        <option value="2">tuesday</option>
-                                        <option value="3">wednesday</option>
-                                        <option value="4">thrusday</option>
-                                        <option value="5">friday</option>
-                                        <option value="6">saturday</option>
-                                        <option value="0">sunday</option>
+                                        <option value="0">monday</option>
+                                        <option value="1">tuesday</option>
+                                        <option value="2">wednesday</option>
+                                        <option value="3">thrusday</option>
+                                        <option value="4">friday</option>
+                                        <option value="5">saturday</option>
+                                        <option value="6">sunday</option>
                                     </Form.Control>
                                 </Form.Group>
                                 <div className="text-right">

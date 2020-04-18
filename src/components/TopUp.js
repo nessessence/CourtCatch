@@ -83,7 +83,7 @@ class TopUp extends React.Component {
                     <h3>{this.state.credit + " Bath"}</h3>
                     <br />
                     <div className="my-4">
-                        <p>Wanna top up some money to your pocket?</p>
+                        <p>Wanna top up any money to your pocket?</p>
                         <Form onSubmit={this.handleAddCredit}>
                             <Form.Group>
                                 <Form.Control onChange={this.handleChange} name="amountToAdd" className="mr-2" type="number" style={{width: "10em", display: "inline-block"}} value={this.state.amountToAdd}></Form.Control>

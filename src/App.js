@@ -58,7 +58,7 @@ class RootContainerComponent extends React.Component {
     return <Route {...rest} render={props => {
       if (!this.props.auth.isAuthenticated) {
         console.log('app.js not authenticate');
-        return <Redirect to="/search" />;
+        return <Redirect to="/" />;
       } else {
         return <ChildComponent {...props} />
       }
@@ -67,6 +67,7 @@ class RootContainerComponent extends React.Component {
 
   render() {
     if ( this.props.auth.isLoading ){
+      console.log("loading");
       return (
         <div style={{position: "fixed", left: "50%", top: "50%"}}>
             <ReactLoading type="spin" color="grey" height={'50%'} width={'50%'} />
@@ -90,7 +91,7 @@ class RootContainerComponent extends React.Component {
               <PrivateRoute exact path="/add_court" component={CreateCourt} />
               <PrivateRoute exact path="/my_courts" component={MyCourt} />
               <PrivateRoute exact path="/become_a_provider" component={BecomeAProvider} />
-              <Route exact path="/search" component={Search} />
+              <PrivateRoute exact path="/search" component={Search} />
               <PrivateRoute exact path="/booking/:courtName" component={Court} />
               <PrivateRoute exact path="/court_res" component={Courts} />
               <PrivateRoute exact path="/topup" component={TopUp} />

@@ -28,7 +28,7 @@ class Court extends React.Component {
             imagePreviewUrl: "",
             imageUploadError: "",
             uploading: false,
-            day_of_the_week: "1",
+            day_of_the_week: "6",
             start_time: "",
             end_time: "",
             marker: null,
@@ -51,7 +51,7 @@ class Court extends React.Component {
     async componentDidMount(){
         let queryParams = this.props.location.search;
         let arr = queryParams.split("&");
-        let start_time, end_time, day_of_the_week = -1;
+        let start_time, end_time, day_of_the_week_query = -1;
 
         for(let i=0; i<arr.length; ++i){
             if ( arr[i].includes("start_time") ){
@@ -61,13 +61,15 @@ class Court extends React.Component {
                 end_time = arr[i].split("=")[1];
             }
             else if ( arr[i].includes("day_of_the_week") ){
-                day_of_the_week = arr[i].split("=")[1];
+                day_of_the_week_query = arr[i].split("=")[1];
             }
         }
+
         this.setState({
-            start_time: start_time,
-            end_time, end_time,
-            day_of_the_week_query: day_of_the_week
+            start_time,
+            end_time,
+            day_of_the_week_query,
+            day_of_the_week: day_of_the_week_query == -1 ? this.state.day_of_the_week : day_of_the_week_query
         });
 
         try {
@@ -421,7 +423,7 @@ class Court extends React.Component {
                         </Form.Group>
                         <Form.Group className="row">
                             <Form.Label className="col-md-3">day of the week</Form.Label>
-                            <Form.Control value={this.state.day_of_the_week_query != -1 ? this.state.day_of_the_week_query : "6"} disabled={this.state.day_of_the_week_query > -1} name="day_of_the_week" className="col-md-5" as="select" onChange={this.handleChange}>
+                            <Form.Control value={this.state.day_of_the_week} disabled={this.state.day_of_the_week_query > -1} name="day_of_the_week" className="col-md-5" as="select" onChange={this.handleChange}>
                                 <option value="0">monday</option>
                                 <option value="1">tuesday</option>
                                 <option value="2">wednesday</option>
