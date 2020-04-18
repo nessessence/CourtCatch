@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {court as courtActions, auth as authActions} from '../actions';
-import { Form, Col, CarouselItem, Carousel, Row } from 'react-bootstrap';
+import { Form, CarouselItem, Carousel, Row } from 'react-bootstrap';
 import {upload as uploadFileToS3} from '../s3';
 import ImagePlaceholder from '../images/imagePlaceholder.jpg';
 import './court.css';
@@ -9,8 +9,6 @@ import GoogleMapReact from 'google-map-react';
 import { gmApiKey} from '../private/keys';
 import StarRatings from 'react-star-ratings';
 import { Redirect } from 'react-router-dom';
-import ImageGallery from 'react-image-gallery';
-
 
 class Court extends React.Component {
     constructor(props){
@@ -434,15 +432,6 @@ class Court extends React.Component {
                             </Form.Control>
                         </Form.Group>
                         <hr className="my-4" />
-                        {/* <h5 className="mb-4">Do you want to reserve rattles and buy shuttlecocks?</h5>
-                        <Form.Group> 
-                            <Form.Check type="checkbox" label="I want to reserve rackets." name="reserveRacket" onChange={this.handleCheckbox}/>
-                            {reserveRacketSection}
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Check type="checkbox" label="I want to buy shuttlecocks." name="reserveShuttlecock" onChange={this.handleCheckbox}/>
-                            {reserveShuttlecockSection}
-                        </Form.Group> */}
                         <div className="text-right mt-3">
                             <button type="submit" className="btn btn-primary">reserve</button>
                         </div>
@@ -564,7 +553,6 @@ class Court extends React.Component {
                     </div>
                     <div className="text-center court-corousel-holder">
                         {courtCarousel}
-                        {/* <ImageGallery items={this.state.galleryImages} /> */}
                     </div>
                     {/* <p>rating: <span style={{color: "orange"}}>{this.state.court.avg_score.toFixed(1)}</span></p> */}
                     <div className="my-3 d-flex flex-row justify-content-between">
