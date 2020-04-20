@@ -13,7 +13,6 @@ class Home extends React.Component {
 
     render(){
         return (
-            <div>
                 <div className="container top-main">
                     <div className="text-control">
                         <h1 data-aos="fade-right" data-aos-delay="100">Looking</h1>
@@ -29,7 +28,6 @@ class Home extends React.Component {
                     </div>
                     <img data-aos="fade-up" src={require("../images/man5.png")}/>
                 </div>
-            </div>
         );
     }
 
