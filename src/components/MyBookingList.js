@@ -64,7 +64,7 @@ class MyBookingList extends React.Component {
                                 </Card.Body>
                             </Col>
                             <Col sm="2" className="d-flex flex-column justify-content-between">
-                                <span className={court.is_verified ? "text-success" : "text-warning"}>{booking.is_active ? "เร็วๆนี้" : "ผ่านไปแล้ว"}</span>
+                                <span className={booking.is_active ? "text-success" : "text-secondary"}>{booking.is_active ? "เร็วๆนี้" : "ผ่านไปแล้ว"}</span>
                                 <span>rating: <span style={{color: "orange"}}>{court.avg_score.toFixed(1)}</span></span>
                             </Col>
                         </Row>

@@ -169,7 +169,6 @@ class Search extends React.Component {
 
         return (
             <div className="app-content-inner" id="content-holder">
-                <div>
                     <div className="d-none">
                         <ReactMic
                         record={this.state.record}
@@ -181,9 +180,9 @@ class Search extends React.Component {
                         backgroundColor="#FF4081"/>
                     </div>
                     <div className="search-control">
-                        <img className="search-background" src={require("../images/court3.jpg")} />
+                        {/* <img className="search-background" src={require("../images/man6.png")} /> */}
                         <div className="text-right search-form">
-                            <h1 data-aos="fade-up">Looking For A Court?</h1>
+                            <h1 data-aos="fade-up">Search</h1>
                             <div data-aos="fade-up" className="search-form-input col-md-6">
                                 <Form.Group className="row">
                                     <Form.Label className="col-md-4">Name</Form.Label>
@@ -225,7 +224,6 @@ class Search extends React.Component {
                             </div>
                         </div>
                     </div>
-                </div>
             </div>
         );
 

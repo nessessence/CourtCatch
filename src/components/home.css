@@ -1,0 +1,43 @@
+.top-main {
+    display: flex;
+    flex-direction: row;
+    margin-top: 60px;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.top-main img {
+    width: 500px;
+    overflow: hidden;
+}
+
+.text-control {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 400px;
+}
+
+.text-control p {
+    margin-top: 30px;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.text-control h1 {
+    color: white;
+    font-size: 3rem;
+}
+
+.book-now {
+    margin-top: 30px;
+    color: rgb(45, 199, 45);
+    border: none;
+    background-color: white;
+    width: fit-content;
+    font-size: 1.25rem;
+    border-radius: 5px;
+    padding: 10px 30px 10px 30px;
+    box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
+}

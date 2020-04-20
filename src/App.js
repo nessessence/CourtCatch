@@ -40,10 +40,13 @@ class RootContainerComponent extends React.Component {
       tempUsername: null
     }
   
+    this.navbarRef = React.createRef();
   }
 
   componentDidMount(){
-    AOS.init();
+    AOS.init({
+      duration: 1000
+    });
   }
   
   async componentWillMount(){
@@ -65,12 +68,18 @@ class RootContainerComponent extends React.Component {
     }} />
   }
 
+  showSignup = () => {
+    this.navbarRef.current.openSignupModal();
+  }
+
   render() {
+    
+    
     if ( this.props.auth.isLoading ){
       console.log("loading");
       return (
         <div style={{position: "fixed", left: "50%", top: "50%"}}>
-            <ReactLoading type="spin" color="grey" height={'50%'} width={'50%'} />
+            <ReactLoading type="spin" color="grey" height={'10vw'} width={'10vh'} />
         </div>
     );
     }
@@ -80,7 +89,7 @@ class RootContainerComponent extends React.Component {
         <BrowserRouter>
           <div className="App">
           <div>
-            <NavBar />
+            <NavBar ref={this.navbarRef}/>
             {this.props.auth.isAuthenticated ? <SecondaryNavBar /> : null}
           </div>
           <div className="app-content">
@@ -97,7 +106,7 @@ class RootContainerComponent extends React.Component {
               <PrivateRoute exact path="/topup" component={TopUp} />
               <PrivateRoute exact path="/my_booking" component={MyBookingList} />
               <PrivateRoute exact path="/my_booking/:bookingID" component={MyBooking} />
-              <Route exact path='/' render={()=> <Home />} />
+              <Route exact path='/' render={()=> <Home showSignup={this.showSignup}/>} />
               <Route exact path="/about" render={()=> <About />} />
             </Switch>
           </div>

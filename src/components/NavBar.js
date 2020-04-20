@@ -27,6 +27,10 @@ class NavBar extends React.Component {
         });
     }
 
+    openSignupModal = () => {
+        this.signupRef.current.openSignupModal();
+    }
+
     render(){
 
         let authButtons = [];
@@ -42,14 +46,14 @@ class NavBar extends React.Component {
             <Navbar className="primary-navbar" expand="lg">
                 <Navbar.Brand><NavLink className="nav-button" exact to="/"><span style={{color: "white"}}>CourtCatch</span></NavLink></Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav" className="d-flex flex-row-reverse">
-                    <div className="auth-button-group">
-                        <Login ref={this.loginRef}/>
-                        <Signup ref={this.signupRef}/>
-                        {authButtons}
-                    </div>
-                    <NavLink className="nav-button" activeClassName="nav-button-active" exact to="/contact">Contact</NavLink>
+                <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
                     <NavLink className="nav-button" activeClassName="nav-button-active" exact to="/about">About</NavLink>
+                    <NavLink className="nav-button" activeClassName="nav-button-active" exact to="/contact">Contact</NavLink>
+                    <div className="auth-button-group">
+                        {authButtons}
+                        <Signup ref={this.signupRef}/>
+                        <Login ref={this.loginRef}/>
+                    </div>
                 </Navbar.Collapse>
                 {/* { this.state.redirect ? <Redirect to="/" /> : null} */}
                 </Navbar>
@@ -72,4 +76,4 @@ const mapDispatchToProps = dispatch => {
       };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default connect(mapStateToProps, mapDispatchToProps, null, {forwardRef: true})(NavBar);
