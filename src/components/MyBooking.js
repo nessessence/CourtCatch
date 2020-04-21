@@ -262,7 +262,7 @@ class MyBooking extends React.Component {
             <div className="app-content-inner">
                 <div className="container text-left">
                     <Link to={"/booking/"+this.state.booking.court.name} className="court-item-holder">
-                        <div className="header-text-group court-item">
+                        <div className="header-text-group court-item court-active">
                             <h3>{this.state.booking.court.name}</h3>
                             <p>{this.state.booking.court.desc}</p>
                             <div>

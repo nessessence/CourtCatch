@@ -18,14 +18,11 @@
     border-right: none;
 }
 
-.court-item:hover{
-    cursor: pointer;
-    background-color: aliceblue;
-}
-
 .court-item-holder {
     text-decoration: none !important;
     color: black;
+    cursor: pointer;
+    background-color: aliceblue;
 }
 .court-item-holder:hover {
     color: black;

@@ -5,18 +5,34 @@ import { Link } from 'react-router-dom';
 import { Col, Row, Card } from 'react-bootstrap';
 import ImagePlaceholder from '../images/imagePlaceholder.jpg';
 import './courts.css';
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
 
 class MyBookingList extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            bookingList: null
+            bookingList: null,
+            filter: "all"
         };
     }
 
     componentDidMount(){
+        let bookings = this.props.user.bookings;
+        let bookingsSoon = [];
+        let bookingsPassed = [];
+        for( const booking of bookings ){
+            if ( booking.is_active ){
+                bookingsSoon.push(booking);
+            }
+            else {
+                bookingsPassed.push(booking);
+            }
+        }
         this.setState({
-            bookingList: this.props.user.bookings
+            bookingList: bookingsSoon.concat(bookingsPassed),
+            bookingListSoon: bookingsSoon,
+            bookingListPassed: bookingsPassed
         })
     }
 
@@ -36,6 +52,12 @@ class MyBookingList extends React.Component {
         }
     }
 
+    filterBooks = (e) => {
+        this.setState({
+            filter: e.value
+        });
+    }
+
     render(){
 
         if ( this.state.bookingList == null ){
@@ -43,11 +65,14 @@ class MyBookingList extends React.Component {
         }
 
         let bookingList = [];
-        for(let i=0; i<this.state.bookingList.length; ++i){
+        let filter = this.state.filter;
+        let bookings = filter === "soon" ? this.state.bookingListSoon : 
+            ( filter === "passed" ? this.state.bookingListPassed : this.state.bookingList )
+        for(let i=0; i<bookings.length; ++i){
             let booking = this.state.bookingList[i];
             let court = booking.court;
             let card = (
-                <Card key={"card-"+i} className="court-item">
+                <Card key={"card-"+i} className={"court-item" + (booking.is_active ? " court-active":"")}>
                         <Row>
                             <Col sm="5">
                                 <Card.Img variant="left" src={court.images[0] == null ? ImagePlaceholder : court.images[0].url} className="court-image"/>
@@ -64,7 +89,7 @@ class MyBookingList extends React.Component {
                                 </Card.Body>
                             </Col>
                             <Col sm="2" className="d-flex flex-column justify-content-between">
-                                <span className={booking.is_active ? "text-success" : "text-secondary"}>{booking.is_active ? "เร็วๆนี้" : "ผ่านไปแล้ว"}</span>
+                                <span className={booking.is_active ? "text-success" : "text-secondary"}>{booking.is_active ? "soon" : "passed"}</span>
                                 <span>rating: <span style={{color: "orange"}}>{court.avg_score.toFixed(1)}</span></span>
                             </Col>
                         </Row>
@@ -83,10 +108,21 @@ class MyBookingList extends React.Component {
             
         }
 
+        const options = [
+            'all', 'soon', 'passed', 
+          ];
+        const defaultOption = options[0];
+
         return (
             <div className="app-content-inner">
                 <div className="container">
                     <h1>My Booking List</h1>
+                    <div className="d-flex flex-row justify-content-end align-items-center my-4">
+                        <span>Booking Status</span>
+                        <Dropdown className="filter-dropdown ml-4" options={options} 
+                            onChange={this.filterBooks} value={this.state.filter} 
+                            placeholder="Select an option" />
+                    </div>
                     {bookingList}
                 </div>
             </div>

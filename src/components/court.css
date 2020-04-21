@@ -30,3 +30,21 @@
 #court-content-inner {
     background-color: white;
 }
+
+.court-item-holder {
+    text-decoration: none !important;
+    color: black;
+}
+.court-item-holder:hover {
+    color: black;
+    cursor: pointer;
+    background-color: aliceblue;
+}
+
+.court-item {
+    margin-top: 10px;
+    height: 200px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}

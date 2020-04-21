@@ -5,6 +5,8 @@ import './courts.css';
 import { Card, Col, Row } from 'react-bootstrap';
 import ImagePlaceholder from '../images/imagePlaceholder.jpg';
 import { Link } from 'react-router-dom';
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
 
 class Courts extends React.Component {
     constructor(props){
@@ -14,7 +16,9 @@ class Courts extends React.Component {
             courts: null,
             start_time: null,
             end_time: null,
-            day_of_the_week: null
+            day_of_the_week: null,
+            filter: "rating",
+            filterMode: "descending"
         }
     }
 
@@ -42,6 +46,55 @@ class Courts extends React.Component {
             start_time,
             end_time,
             day_of_the_week
+        });
+    }
+
+    changeFilter = (e) => {
+        console.log("change filter");
+        this.sortCourts(e.value, this.state.filterMode);
+    }
+
+    changeFilterMode = e => {
+        console.log("change filter mode")
+        this.sortCourts(this.state.filter, e.value);
+    }
+
+    sortCourts = (filter,filterMode) => {
+        let courts = this.state.courts;
+        console.log(courts);
+        courts.sort((back,front) => {
+
+            let logic;
+            if ( filter === "name" ){
+                console.log("filter name")
+                logic = back.name > front.name;
+            }
+            else if ( filter === "rating" ){
+                console.log("filter rating")
+                logic = back.avg_score > front.avg_score;
+            }
+            else {
+                console.log("filter price")
+                logic = back.price > front.price;
+            }
+    
+            if ( filterMode === "descending" ){
+                console.log("filter mode descending")
+                logic = !logic;
+            }
+            else {
+                console.log("filter mode ascending")
+            }
+            if ( logic ) return 1;
+            return -1;
+        });
+
+        console.log(courts)
+        
+        this.setState({
+            courts,
+            filter,
+            filterMode
         });
     }
 
@@ -79,10 +132,33 @@ class Courts extends React.Component {
             );
         }
 
+        if ( courtComponents.length === 0 ){
+            courtComponents = <h1>No search results found.</h1>
+        }
+
+        
+        const filterOptions = [
+            'name', 'rating', 'price', 
+        ];
+
+        const filterModeOptions = [
+            'ascending', 'descending', 
+        ];
+
+
         return (
             <div className="app-content-inner">
                 <div className="container">
                     <h1>Search Results</h1>
+                    <div className="d-flex flex-row justify-content-end align-items-center my-4">
+                        <span>Sort By</span>
+                        <Dropdown className="filter-dropdown ml-4" options={filterOptions} 
+                            onChange={this.changeFilter} value={this.state.filter} 
+                            placeholder="Select an option" />
+                        <Dropdown className="filter-dropdown ml-4" options={filterModeOptions} 
+                        onChange={this.changeFilterMode} value={this.state.filterMode} 
+                        placeholder="Select an option" />
+                    </div>
                     {courtComponents}
                 </div>
             </div>

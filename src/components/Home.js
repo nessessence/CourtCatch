@@ -5,13 +5,34 @@ import './home.css';
 import { Row, Col } from 'react-bootstrap';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon}  from '@fortawesome/react-fontawesome';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class Home extends React.Component {
     constructor(props){
         super(props);
+        this.state = {
+            redirect: false
+        }
+    }
+
+    findCourts = () => {
+        if ( !this.props.auth.isAuthenticated ){
+            this.props.showSignup();
+        }
+        else {
+            this.setState({
+                redirect: true
+            })
+        }
     }
 
     render(){
+
+        if ( this.state.redirect ){
+            return <Redirect to="/search" />
+        }
+
         return (
                 <div className="container top-main">
                     <div className="text-control">
@@ -20,7 +41,7 @@ class Home extends React.Component {
                         <h1 data-aos="fade-right" data-aos-delay="300">Badminton Court?</h1>
                         <p data-aos="fade-right" data-aos-delay="400">CourtCatch is the easiest way to find badminton courts. Booking a badminton court will only take a few seconds.</p>
                         <button  data-aos="fade-right" data-aos-delay="500" className="book-now"
-                            onClick={this.props.showSignup}
+                            onClick={this.findCourts}
                         >
                             FIND COURTS
                             <FontAwesomeIcon className="ml-3" icon={faChevronRight} />
@@ -33,4 +54,10 @@ class Home extends React.Component {
 
 }
 
-export default Home;
+const mapStateToProps = state => {
+    return {
+        auth: state.auth
+    };
+}
+  
+export default connect(mapStateToProps, null)(Home);

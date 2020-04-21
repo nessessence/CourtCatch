@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophone, faStop, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import './search.css';
 
+
 class Search extends React.Component {
     constructor(props){
         super(props);
@@ -26,7 +27,8 @@ class Search extends React.Component {
             record: false,
             shouldSetText: false,
             speechText: "",
-            loading_speech: false
+            loading_speech: false,
+ 
         }
     }
 

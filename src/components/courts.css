@@ -18,7 +18,7 @@
     border-right: none;
 }
 
-.court-item:hover{
+.court-active:hover{
     cursor: pointer;
     background-color: aliceblue;
 }
@@ -29,4 +29,9 @@
 }
 .court-item-holder:hover {
     color: black;
+}
+
+.filter-dropdown {
+    width: 150px;
+    text-align: right;
 }
