@@ -29,6 +29,7 @@ import MyBookingList from './components/MyBookingList';
 import MyBooking from './components/MyBooking';
 import Contact from './components/Contact';
 import AOS from 'aos';
+import TaC from './components/TaC';
 import 'aos/dist/aos.css';
 
 let store = createStore(myApp, applyMiddleware(thunk));
@@ -110,6 +111,7 @@ class RootContainerComponent extends React.Component {
               <Route exact path='/' render={()=> <Home showSignup={this.showSignup}/>} />
               <Route exact path="/about" render={()=> <About />} />
               <Route exact path="/contact" render={()=> <Contact />} />
+              <Route exact path="/terms_and_conditions" render={()=> <TaC />} />
             </Switch>
           </div>
         </div>

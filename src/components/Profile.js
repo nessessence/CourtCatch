@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {auth} from '../actions';
 import './profile.css';
-import Prayuth from './prayuth.jpg';
+import ProfileImg from './profile.png';
 import { Form, Button, Row, Col, Jumbotron } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import ChangePassword from './ChagePassword';
@@ -21,7 +21,7 @@ class Profile extends React.Component {
                         <Row>
                             <Col sm="4">
                                 <div className="profile-image-container">
-                                    <img className="profile-large" src={Prayuth} />
+                                    <img className="profile-large" src={ProfileImg} />
                                 </div>
                             </Col>
                             <Col className="text-left">

@@ -126,9 +126,9 @@ class Login extends React.Component {
                             <p className="error-form-field">{this.state.formErrors.password}</p>
                         </Form.Group>
                         <p className="error-form-field">{errText}</p>
-                        <div className="text-right">
+                        {/* <div className="text-right">
                             <a href="#">forget password?</a>
-                        </div>
+                        </div> */}
                     </Modal.Body>
                     <Modal.Footer>
                         <button type="submit" className="gradient-button">

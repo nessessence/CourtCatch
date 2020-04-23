@@ -239,7 +239,7 @@ class Signup extends React.Component {
                         <Form.Group>
                             <Form.Check type="checkbox">
                                 <Form.Check.Input name="agreement" type="checkbox" onChange={this.handleChange}/>
-                                <Form.Check.Label>I agree to the <a href="#">terms and conditions</a>.</Form.Check.Label>
+                                <Form.Check.Label>I agree to the <a href="/terms_and_conditions" target="_blank">terms and conditions</a>.</Form.Check.Label>
                             </Form.Check>
                             <p className="error-form-field">{this.state.formErrors.agreement}</p>
                         </Form.Group>
