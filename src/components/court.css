@@ -43,7 +43,7 @@
 
 .court-item {
     margin-top: 10px;
-    height: 200px;
+    height: auto;
     border-top: none;
     border-left: none;
     border-right: none;

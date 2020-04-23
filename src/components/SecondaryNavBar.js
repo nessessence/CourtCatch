@@ -16,19 +16,22 @@ class SecondaryNavBar extends React.Component {
         }
 
         return (
-            <div className="secondary-navbar shadow-sm" expand="lg">
-                <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/search">Search</NavLink>
-                <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/my_booking">My Booking</NavLink>
-                <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/my_courts">My Courts</NavLink>
-                {
-                    this.props.user.is_verified ? 
-                    <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/add_court">Add Court</NavLink>
-                    : <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/become_a_provider">Become A Provider</NavLink>
-                }
-                <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/history">History</NavLink>
-                <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/profile">Profile</NavLink>
-                <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/topup">Top Up</NavLink>
-            </div>
+            <Navbar className="shadow-sm" expand="lg">
+                <Navbar.Toggle className="ml-auto" aria-controls="basic-navbar-nav" />
+                <Navbar.Collapse id="basic-navbar-nav" className="secondary-navbar">
+                    <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/search">Search</NavLink>
+                    <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/my_booking">My Booking</NavLink>
+                    <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/my_courts">My Courts</NavLink>
+                    {
+                        this.props.user.is_verified ? 
+                        <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/add_court">Add Court</NavLink>
+                        : <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/become_a_provider">Become A Provider</NavLink>
+                    }
+                    <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/history">History</NavLink>
+                    <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/profile">Profile</NavLink>
+                    <NavLink className="sec-nav-button nav-button" activeClassName="sec-nav-button-active" exact to="/topup">Top Up</NavLink>
+                </Navbar.Collapse>
+            </Navbar>
         );
     }
 }

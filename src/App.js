@@ -27,6 +27,7 @@ import Courts from './components/Courts';
 import TopUp from './components/TopUp';
 import MyBookingList from './components/MyBookingList';
 import MyBooking from './components/MyBooking';
+import Contact from './components/Contact';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -108,6 +109,7 @@ class RootContainerComponent extends React.Component {
               <PrivateRoute exact path="/my_booking/:bookingID" component={MyBooking} />
               <Route exact path='/' render={()=> <Home showSignup={this.showSignup}/>} />
               <Route exact path="/about" render={()=> <About />} />
+              <Route exact path="/contact" render={()=> <Contact />} />
             </Switch>
           </div>
         </div>

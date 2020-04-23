@@ -10,6 +10,14 @@
     color: white;
 }
 
+@media only screen and (max-width: 720px) {
+	.nav-button {
+		/* background-color: transparent; */
+		margin-left: 1rem;
+		margin-right: 0px;
+	}
+  }
+
 .nav-button:hover {
     color: turquoise;
     cursor: pointer;

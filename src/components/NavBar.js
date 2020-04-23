@@ -45,16 +45,16 @@ class NavBar extends React.Component {
         return (
             <Navbar className="primary-navbar" expand="lg">
                 <Navbar.Brand><NavLink className="nav-button" exact to="/"><span style={{color: "white"}}>CourtCatch</span></NavLink></Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+                {/* <Navbar.Toggle aria-controls="basic-navbar-nav" /> */}
+                <div className="ml-auto">
                     <NavLink className="nav-button" activeClassName="nav-button-active" exact to="/about">About</NavLink>
                     <NavLink className="nav-button" activeClassName="nav-button-active" exact to="/contact">Contact</NavLink>
-                    <div className="auth-button-group">
-                        {authButtons}
-                        <Signup ref={this.signupRef}/>
-                        <Login ref={this.loginRef}/>
-                    </div>
-                </Navbar.Collapse>
+                    {/* <div className="auth-button-group"> */}
+                    {authButtons}
+                    <Signup ref={this.signupRef}/>
+                    <Login ref={this.loginRef}/>
+                    {/* </div> */}
+                </div>
                 {/* { this.state.redirect ? <Redirect to="/" /> : null} */}
                 </Navbar>
         );

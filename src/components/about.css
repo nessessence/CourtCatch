@@ -1,0 +1,23 @@
+.court-image-control {
+    position: relative;
+}
+
+.court-image-control img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-position: center bottom;
+    width: 100%;
+    background-size: cover;
+    height: auto;
+    z-index: 5;
+}
+
+.court-image-control h1 {
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    top: 4rem;
+    color: white;
+}

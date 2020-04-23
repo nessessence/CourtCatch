@@ -126,7 +126,7 @@ class Courts extends React.Component {
             let court = this.state.courts[index];
             courtComponents.push(
                 <Link key={"link-"+court.name} to={{ pathname:"/booking/"+court.name, search: searchTime}} className="court-item-holder">
-                    <Card className="court-item">
+                    <div className="court-item">
                         <Row style={{height: "100%"}}>
                             <Col sm="5">
                                 <Card.Img variant="left" src={court.images[0] == null ? ImagePlaceholder : court.images[0].url} className="court-image"/>
@@ -147,7 +147,7 @@ class Courts extends React.Component {
                                 <span>rating: <span style={{color: "orange"}}>{court.reviews.length > 0 ? court.avg_score.toFixed(1) : "unrated"}</span></span>
                             </Col>
                         </Row>
-                    </Card>
+                    </div>
                 </Link>
             );
         }

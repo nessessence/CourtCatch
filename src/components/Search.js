@@ -184,7 +184,7 @@ class Search extends React.Component {
                     <div className="search-control">
                         {/* <img className="search-background" src={require("../images/man6.png")} /> */}
                         <div className="text-right search-form">
-                            <h1 data-aos="fade-up">Search</h1>
+                            <h3 data-aos="fade-up">Search</h3>
                             <div data-aos="fade-up" className="search-form-input col-md-6">
                                 <Form.Group className="row">
                                     <Form.Label className="col-md-4">Name</Form.Label>
