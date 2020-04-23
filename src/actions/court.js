@@ -13,7 +13,7 @@ export const createCourt = (name,price,desc,lat,long,court_count,open,close) => 
       }
 
       try{
-        let res = await axios.post("http://localhost:8000/api/court/", {name,price,desc,lat,long,court_count,open,close}, config);
+        let res = await axios.post(process.env.REACT_APP_API_URL + "/api/court/", {name,price,desc,lat,long,court_count,open,close}, config);
         console.log(res.data);
         return res.data;
       }
@@ -36,7 +36,7 @@ export const loadCourts = () => {
         }
 
         try{
-            let res = await axios.get("http://localhost:8000/api/court/", config);
+            let res = await axios.get(process.env.REACT_APP_API_URL + "/api/court/", config);
             console.log(res.data);
             return res.data;
         }
@@ -60,7 +60,7 @@ export const loadCourt = (courtName) => {
         }
 
         try{
-            let res = await axios.get("http://localhost:8000/api/court/"+courtName+"/", config);
+            let res = await axios.get(process.env.REACT_APP_API_URL + "/api/court/"+courtName+"/", config);
             console.log(res.data);
             return res.data;
         }
@@ -84,7 +84,7 @@ export const reviewCourt = (courtName, score, review) => {
         }
 
         try{
-            let res = await axios.post("http://localhost:8000/api/court/"+courtName+"/rate_court/", {score, review}, config);
+            let res = await axios.post(process.env.REACT_APP_API_URL + "/api/court/"+courtName+"/rate_court/", {score, review}, config);
             console.log(res.data);
             return res.data;
         }
@@ -108,7 +108,7 @@ export const loadMyCourt = () => {
         }
 
         try{
-            let res = await axios.get("http://localhost:8000/api/user/"+getState().auth.user.username+"/courts/", config);
+            let res = await axios.get(process.env.REACT_APP_API_URL + "/api/user/"+getState().auth.user.username+"/courts/", config);
             return res.data;
         }
         catch(err){
@@ -130,7 +130,7 @@ export const addImageToCourt = (courtName, url) => {
         }
 
         try{
-            let res = await axios.post("http://localhost:8000/api/court/"+courtName+"/add_image/", {url}, config);
+            let res = await axios.post(process.env.REACT_APP_API_URL + "/api/court/"+courtName+"/add_image/", {url}, config);
             return res.data;
         }
         catch(err){
@@ -151,7 +151,7 @@ export const searchCourts = (queryParams) => {
             }
         }
 
-        let url = "http://localhost:8000/api/court" + queryParams;
+        let url = process.env.REACT_APP_API_URL + "/api/court" + queryParams;
         console.log(url);
         try{
             let res = await axios.get(url, config);
@@ -175,7 +175,7 @@ export const bookCourt = (courtName,start,end,day_of_the_week) => {
             }
         }
 
-        let url = "http://localhost:8000/api/court/" + courtName +'/book/';
+        let url = process.env.REACT_APP_API_URL + "/api/court/" + courtName +'/book/';
         try{
             let res = await axios.post(url,{start,end,day_of_the_week}, config);
             return res.data;
@@ -198,7 +198,7 @@ export const loadRackets = (bookingID) => {
             }
         }
 
-        let url = "http://localhost:8000/api/booking/"+bookingID+"/get_rackets/";
+        let url = process.env.REACT_APP_API_URL + "/api/booking/"+bookingID+"/get_rackets/";
         try{
             let res = await axios.get(url, config);
             return res.data;
@@ -221,7 +221,7 @@ export const loadShuttlecock = (bookingID) => {
             }
         }
 
-        let url = "http://localhost:8000/api/booking/"+bookingID+"/get_shuttlecocks/";
+        let url = process.env.REACT_APP_API_URL + "/api/booking/"+bookingID+"/get_shuttlecocks/";
         try{
             let res = await axios.get(url, config);
             return res.data;
@@ -244,7 +244,7 @@ export const loadBooking = (bookingID) => {
             }
         }
 
-        let url = "http://localhost:8000/api/booking/"+bookingID+"/";
+        let url = process.env.REACT_APP_API_URL + "/api/booking/"+bookingID+"/";
         try{
             let res = await axios.get(url, config);
             return res.data;
@@ -269,7 +269,7 @@ export const addRacket = (courtName, name, price) => {
             }
         }
 
-        let url = "http://localhost:8000/api/court/" + courtName +'/add_racket/';
+        let url = process.env.REACT_APP_API_URL + "/api/court/" + courtName +'/add_racket/';
         try{
             let res = await axios.post(url,{name,price}, config);
             return res.data;
@@ -293,7 +293,7 @@ export const addShuttlecock = (courtName, name, count, count_per_unit, price) =>
             }
         }
 
-        let url = "http://localhost:8000/api/court/" + courtName +'/add_shuttlecock/';
+        let url = process.env.REACT_APP_API_URL + "/api/court/" + courtName +'/add_shuttlecock/';
         try{
             let res = await axios.post(url,{name, count, count_per_unit,price}, config);
             return res.data;
@@ -317,7 +317,7 @@ export const reserveRacket = (bookingID, id) => {
             }
         }
 
-        let url = "http://localhost:8000/api/booking/" + bookingID +'/reserve_racket/';
+        let url = process.env.REACT_APP_API_URL + "/api/booking/" + bookingID +'/reserve_racket/';
         try{
             let res = await axios.post(url,{id}, config);
             return res.data;
@@ -341,7 +341,7 @@ export const buyShuttlecock = (bookingID, id, count) => {
             }
         }
 
-        let url = "http://localhost:8000/api/booking/" + bookingID +'/buy_shuttlecock/';
+        let url = process.env.REACT_APP_API_URL + "/api/booking/" + bookingID +'/buy_shuttlecock/';
         try{
             let res = await axios.post(url,{id,count}, config);
             return res.data;
@@ -365,7 +365,7 @@ export const cancelRacket = (racketID) => {
             }
         }
 
-        let url = "http://localhost:8000/api/racket/" + racketID +'/cancel/';
+        let url = process.env.REACT_APP_API_URL + "/api/racket/" + racketID +'/cancel/';
         try{
             let res = await axios.post(url,{}, config);
             return res.data;
@@ -388,7 +388,7 @@ export const cancelShuttlecock = (shuttlecockID) => {
             }
         }
 
-        let url = "http://localhost:8000/api/shuttlecock/" + shuttlecockID +'/cancel/';
+        let url = process.env.REACT_APP_API_URL + "/api/shuttlecock/" + shuttlecockID +'/cancel/';
         try{
             let res = await axios.post(url,{}, config);
             return res.data;
@@ -412,7 +412,7 @@ export const cancelCourt = (bookingID) => {
             }
         }
 
-        let url = "http://localhost:8000/api/booking/" + bookingID +'/cancel/';
+        let url = process.env.REACT_APP_API_URL + "/api/booking/" + bookingID +'/cancel/';
         try{
             let res = await axios.post(url,{}, config);
             return res.data;
@@ -437,7 +437,7 @@ export const callSpeech = (url,username) => {
             }
         }
 
-        let apiUrl = "http://localhost:8000/api/speech/";
+        let apiUrl = process.env.REACT_APP_API_URL + "/api/speech/";
         try{
             let res = await axios.post(apiUrl,{url,username}, config);
             return res.data;
@@ -465,7 +465,7 @@ export const  callBecomeAProvider = (data) =>{
             }
         }
 
-        let apiUrl = "http://localhost:8000/api/document/";
+        let apiUrl = process.env.REACT_APP_API_URL + "/api/document/";
         try{
             let res = await axios.post(apiUrl,{...data}, config);
             return res.data;

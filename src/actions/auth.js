@@ -14,7 +14,7 @@ export const getUserInfo = (username) => {
     }
 
     try{
-      let res = await axios.get("http://localhost:8000/api/user/"+username+"/", config);
+      let res = await axios.get(process.env.REACT_APP_API_URL + "/api/user/"+username+"/", config);
       console.log(res);
       return res.data;
     }
@@ -43,7 +43,7 @@ export const loadUser = (username) => {
       if (token) {
         headers["Authorization"] = `Token ${token}`;
 
-        return fetch("http://localhost:8000/api/user/"+(username)+"/", {headers, })  
+        return fetch(process.env.REACT_APP_API_URL + "/api/user/"+(username)+"/", {headers, })  
         .then(res => {
           if (res.status < 500) {
             return res.json().then(data => {
@@ -74,7 +74,7 @@ export const loadUser = (username) => {
       let headers = {"Content-Type": "application/json"};
       let body = JSON.stringify({username, password});
   
-      return fetch("http://localhost:8000/auth/", {headers, body, method: "POST"})
+      return fetch(process.env.REACT_APP_API_URL + "/auth/", {headers, body, method: "POST"})
         .then(res => {
           if (res.status < 500) {
             return res.json().then(data => {
@@ -111,7 +111,7 @@ export const loadUser = (username) => {
       let body = JSON.stringify({first_name, last_name, username, password, email, phone_number});
       console.log(body);
   
-      return fetch("http://localhost:8000/api/user/", {headers, body, method: "POST"})
+      return fetch(process.env.REACT_APP_API_URL + "/api/user/", {headers, body, method: "POST"})
         .then(res => {
           if (res.status < 500) {
             return res.json().then(data => {
@@ -182,7 +182,7 @@ export const loadUser = (username) => {
       }
 
       try{
-        let res = await axios.post("http://localhost:8000/api/user/"+username+"/change_password/", {password: password}, config);
+        let res = await axios.post(process.env.REACT_APP_API_URL + "/api/user/"+username+"/change_password/", {password: password}, config);
         console.log(res);
         dispatch({type: 'USER_LOADED', user: res.data });
         return res.data;
@@ -208,7 +208,7 @@ export const loadUser = (username) => {
       }
 
       try{
-        let res = await axios.post("http://localhost:8000/api/user/"+username+"/add_credit/", {amount: amount}, config);
+        let res = await axios.post(process.env.REACT_APP_API_URL + "/api/user/"+username+"/add_credit/", {amount: amount}, config);
         console.log(res.data.result);
         dispatch({type: 'USER_LOADED', user: res.data.result });
         return res.data.result;
@@ -234,7 +234,7 @@ export const loadUser = (username) => {
       }
 
       try{
-        let res = await axios.get("http://localhost:8000/api/log/"+username+"/", config);
+        let res = await axios.get(process.env.REACT_APP_API_URL + "/api/log/"+username+"/", config);
         console.log(res.data);
         return res.data;
       }
