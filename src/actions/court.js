@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const createCourt = (name,price,desc,lat,long,court_count) => {
+export const createCourt = (name,price,desc,lat,long,court_count,open,close) => {
     return async (dispatch, getState) => {
       const token = getState().auth.token;
       let username = getState().auth.user.username;
@@ -13,7 +13,7 @@ export const createCourt = (name,price,desc,lat,long,court_count) => {
       }
 
       try{
-        let res = await axios.post("http://localhost:8000/api/court/", {name,price,desc,lat,long,court_count}, config);
+        let res = await axios.post("http://localhost:8000/api/court/", {name,price,desc,lat,long,court_count,open,close}, config);
         console.log(res.data);
         return res.data;
       }

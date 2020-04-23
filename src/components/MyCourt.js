@@ -33,6 +33,22 @@ class MyCourt extends React.Component {
         }
     }
 
+    pad = (n, width) => {
+        let z ='0';
+        n = n + '';
+        return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+      }
+
+    mapTime =(timeNum) => {
+        timeNum = parseInt(timeNum);
+        if ( timeNum % 2 === 0 ){
+            return this.pad(timeNum/2,2) + ":00 น.";
+        }
+        else {
+            return this.pad(timeNum/2,2) + ":30 น.";
+        }
+    }
+
     render(){
         if ( !this.state.loadFinish ){
             return null;
@@ -54,7 +70,11 @@ class MyCourt extends React.Component {
                                     <h4>{court.name}</h4>
                                     <p className="court-desc text-secondary">{court.desc}</p>
                                 </div>
-                                <p className=" text-secondary">{court.price} bath/hr</p>
+                                <p className=" text-secondary">
+                                    <span className="mr-3">{court.price} bath/hr</span>
+                                    <span className="mr-3">{"open: " + this.mapTime(court.open)}</span>
+                                    <span className="mr-3">{"close: " + this.mapTime(court.close)}</span>
+                                </p>
                             </Col>
                             <Col sm="2" className="d-flex flex-column justify-content-between">
                                 <span className={court.is_verified ? "text-success" : "text-warning"}>{court.is_verified ? "verified" : "pending"}</span>

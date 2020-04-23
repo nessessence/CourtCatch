@@ -19,12 +19,16 @@ class CreateCourt extends React.Component {
             longtitude: 100.5018,
             courtCount: "",
             marker: null,
+            open: "",
+            close: "",
             formErrors: {
                 name: "",
                 price: "",
                 latitude: "",
                 longtitude: "",
                 courtCount: "",
+                open: "",
+                close: ""
             },
             maps: null,
             isSubmiting: false,
@@ -43,7 +47,8 @@ class CreateCourt extends React.Component {
                 });
                 try {
                     let data = await this.props.createCourt(this.state.name, this.state.price, this.state.desc,
-                    this.state.latitude, this.state.longtitude, this.state.courtCount);
+                    this.state.latitude, this.state.longtitude, this.state.courtCount,
+                    this.state.open, this.state.close);
                 }
                 catch(err){
                     alert(err.response.data.message);
@@ -113,16 +118,50 @@ class CreateCourt extends React.Component {
             formErrors.courtCount = "";
         }
 
+        let open = this.state.open;
+        let close  = this.state.close;
+
+        if ( open === "" ){
+            formErrors.open = "this field is required";
+        }
+        else {
+            formErrors.open = "";
+        }
+
+        if ( close === "" ){
+            formErrors.close = "this field is required";
+        }
+        else {
+            formErrors.close = "";
+        }
+
+        if ( parseInt(open) >= parseInt(close) ){
+            formErrors.close = "open and close time are invalid.";
+        }
+
         this.setState({
             formErrors: formErrors
         })
     }
 
     handleChange = e => {
-        const { name,value } = e.target
         this.setState({
-            [name]: value
+            shouldSetText: false
         })
+        const { name,value } = e.target
+        if ( name == "open" || name === "close" ){
+            let res = value.split(":");
+            let time = parseInt(res[0]) * 2 + (parseInt(res[1]) >= 30 ? 1 : 0 );
+            this.setState({
+                [name]: time.toString()
+            });
+        }
+        else {
+            this.setState({
+                [name]: value
+            });
+        }
+       
     }
 
     handleLocationChange = ({ position }) => {
@@ -196,6 +235,16 @@ class CreateCourt extends React.Component {
                             <p className="error-form-field">{this.state.formErrors.courtCount}</p>
                         </Form.Group>
                         <Form.Group>
+                            <Form.Label>open time</Form.Label>
+                            <Form.Control type="time" name="open" onChange={this.handleChange}></Form.Control>
+                            <p className="error-form-field">{this.state.formErrors.open}</p>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>close time</Form.Label>
+                            <Form.Control type="time" name="close" onChange={this.handleChange}></Form.Control>
+                            <p className="error-form-field">{this.state.formErrors.close}</p>
+                        </Form.Group>
+                        <Form.Group>
                             <Form.Label>Select Court Position</Form.Label>
                             <p className="text-secondary">latitude: <span>{this.state.latitude}</span></p>
                             <p className="text-secondary">longtitude: <span>{this.state.longtitude}</span></p>
@@ -227,8 +276,8 @@ class CreateCourt extends React.Component {
   
 const mapDispatchToProps = dispatch => {
     return {
-        createCourt: (name,price,desc,lat,lng,count) => {
-          return dispatch(court.createCourt(name,price,desc,lat,lng,count));
+        createCourt: (name,price,desc,lat,lng,count,open,close) => {
+          return dispatch(court.createCourt(name,price,desc,lat,lng,count,open,close));
         },
       };
 }

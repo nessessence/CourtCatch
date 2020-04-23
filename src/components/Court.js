@@ -216,7 +216,8 @@ class Court extends React.Component {
           })
 
           console.log("submit reserve");
-          if ( this.state.start_time === "" || this.state.end_time === "" || this.state.day_of_the_week === "" ){
+          if ( this.state.start_time === "" || this.state.end_time === "" || this.state.day_of_the_week === "" 
+                || parseInt(this.state.start_time) >= parseInt(this.state.end_time) ){
             alert("invalid reserve input");
             return;
           }
