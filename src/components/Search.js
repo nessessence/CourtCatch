@@ -188,10 +188,13 @@ class Search extends React.Component {
                             <div data-aos="fade-up" className="search-form-input col-md-6">
                                 <Form.Group className="row">
                                     <Form.Label className="col-md-4">Name</Form.Label>
-                                    <Form.Control className="col-md-6" value={this.state.shouldSetText ? this.state.speechText : this.state.name} type="text" name="name" onChange={this.handleChange} placeholder="enter court name..." />
-                                    <FontAwesomeIcon className={"ml-1 speak-icon" + (this.state.loading_speech ? " fa-spin" : "" )}
-                                        icon={this.state.loading_speech ? faSpinner : (this.state.record? faStop : faMicrophone )}
-                                        onClick={this.state.loading_speech ? null : (this.state.record? this.stopRecording : this.startRecording )} />
+                                    <div className="d-flex flex-row col-md-6 justify-content-start px-0">
+                                        <Form.Control className="flex-grow-1" value={this.state.shouldSetText ? this.state.speechText : this.state.name} type="text" name="name" onChange={this.handleChange} placeholder="enter court name..." />
+                                        <FontAwesomeIcon className={"ml-3 speak-icon" + (this.state.loading_speech ? " fa-spin" : "" )}
+                                            icon={this.state.loading_speech ? faSpinner : (this.state.record? faStop : faMicrophone )}
+                                            onClick={this.state.loading_speech ? null : (this.state.record? this.stopRecording : this.startRecording )} />
+                                    </div>
+                                    
                                 </Form.Group>
                                 <Form.Group className="row">
                                     <Form.Label className="col-md-4">min rating</Form.Label>
