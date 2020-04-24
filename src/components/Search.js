@@ -131,7 +131,8 @@ class Search extends React.Component {
             this.setState({
                 shouldSetText: true,
                 speechText: transcript,
-                loading_speech: false
+                loading_speech: false,
+                name: transcript
             })
         }
         catch(err){
