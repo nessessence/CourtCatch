@@ -37,7 +37,8 @@ const initialState = {
             localStorage.removeItem("username");
             return {...state, errors: action.data, token: null, user: null,
             isAuthenticated: false, isLoading: false};
-  
+        case "UPDATE_BOOKING":
+                return {...state, user: action.user}
         default:
             return state;
     }

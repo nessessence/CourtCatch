@@ -42,6 +42,7 @@ class MyBooking extends React.Component {
             });
         }
         else {
+
             let rackets = await this.props.loadRackets(booking.id);
             let shuttlecocks = await this.props.loadShuttlecock(booking.id);
 
@@ -368,7 +369,10 @@ const mapDispatchToProps = dispatch => {
         },
         getUserInfo: (username) => {
             return dispatch(authActions.getUserInfo(username))
-        }
+        },
+        loadUser: (username) => {
+            return dispatch(authActions.loadUser(username));
+        },
       };
 }
   

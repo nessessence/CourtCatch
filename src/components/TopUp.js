@@ -45,11 +45,12 @@ class TopUp extends React.Component {
         });
         try {
             await this.props.addCredit(this.state.amountToAdd);
-            alert('credit added');
-            this.setState({
-                amountToAdd: 0,
-                loading: false
-            })
+            // alert('credit added');
+            // this.setState({
+            //     amountToAdd: 0,
+            //     loading: false
+            // })
+            window.location.reload();
         }
         catch(err){
             alert(err);

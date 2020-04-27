@@ -476,3 +476,30 @@ export const  callBecomeAProvider = (data) =>{
         }
     }
 }
+
+
+export const updateBookingList = (username) => {
+    return async (dispatch, getState) => {
+
+        const token = getState().auth.token;
+        console.log(token);
+    
+        let config = {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Token '+token
+          }
+        }
+    
+        try{
+          let res = await axios.get(process.env.REACT_APP_API_URL + "/api/user/"+username+"/", config);
+          console.log(res);
+          dispatch({type: 'UPDATE_BOOKING', user: res.data });
+          return res.data;
+        }
+        catch(err){
+          throw err;
+        }
+        
+      };
+}

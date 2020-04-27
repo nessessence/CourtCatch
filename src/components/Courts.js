@@ -7,6 +7,7 @@ import ImagePlaceholder from '../images/imagePlaceholder.jpg';
 import { Link } from 'react-router-dom';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
+import ReactLoading from 'react-loading';
 
 class Courts extends React.Component {
     constructor(props){
@@ -45,7 +46,8 @@ class Courts extends React.Component {
             courts: res,
             start_time,
             end_time,
-            day_of_the_week
+            day_of_the_week,
+            loadFinish: true
         });
     }
 
@@ -110,7 +112,7 @@ class Courts extends React.Component {
             return this.pad(timeNum/2,2) + ":00 น.";
         }
         else {
-            return this.pad(timeNum/2,2) + ":30 น.";
+            return this.pad((timeNum-1)/2,2) + ":30 น.";
         }
     }
 
@@ -152,7 +154,15 @@ class Courts extends React.Component {
             );
         }
 
-        if ( courtComponents.length === 0 ){
+        if ( !this.state.loadFinish ){
+            courtComponents = (
+                <div style={{position: "fixed", left: "50%", top: "50%"}}>
+                    <ReactLoading type="spin" color="grey" height={'10vw'} width={'10vh'} />
+                </div>
+            );
+        }
+
+        else if ( courtComponents.length === 0 ){
             courtComponents = <h1>No search results found.</h1>
         }
 

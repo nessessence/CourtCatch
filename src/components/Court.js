@@ -233,8 +233,8 @@ class Court extends React.Component {
 
           try {
               let res = await this.props.bookCourt(this.state.courtName,this.state.start_time,this.state.end_time,this.state.day_of_the_week);
-            console.log(res.booking_id);
-            alert("reserve success");
+              console.log(res.booking_id);
+                let res2 = await this.props.updateBookingList(this.props.user.username);
 
             this.setState({
                 shouldRedirect: true,
@@ -336,7 +336,7 @@ class Court extends React.Component {
             return this.pad(timeNum/2,2) + ":00";
         }
         else {
-            return this.pad(timeNum/2,2) + ":30";
+            return this.pad((timeNum-1)/2,2) + ":30";
         }
     }
 
@@ -624,8 +624,8 @@ const mapDispatchToProps = dispatch => {
         loadUser: (username) => {
             return dispatch(authActions.loadUser(username));
         },
-        getUserInfo: (username) => {
-            return dispatch(authActions.getUserInfo(username));
+        updateBookingList: (username) => {
+            return dispatch(courtActions.updateBookingList(username));
         },
       };
 }

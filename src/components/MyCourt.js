@@ -45,7 +45,7 @@ class MyCourt extends React.Component {
             return this.pad(timeNum/2,2) + ":00 น.";
         }
         else {
-            return this.pad(timeNum/2,2) + ":30 น.";
+            return this.pad((timeNum-1)/2,2) + ":30 น.";
         }
     }
 
