@@ -20,7 +20,8 @@ class Court extends React.Component {
             score: "5",
             review: "",
             formErrors: {
-                score: ""
+                score: "",
+                review: ""
             },
             file: "",
             imagePreviewUrl: "",
@@ -130,6 +131,14 @@ class Court extends React.Component {
         }
         else {
             formErrors.score = "";
+        }
+
+        let review = this.state.review;
+        if ( review.length > 200 ){
+            formErrors.review = "review length should be equal to or less than 200 characters";
+        }
+        else{
+            formErrors.review = "";
         }
 
         this.setState({
@@ -348,7 +357,7 @@ class Court extends React.Component {
                 reviews.push(
                     <div key={"review-holder"+i} className="section-border d-flex flex-column my-1">
                         <StarRatings rating={review.score} starDimension="15px" numberOfStars={5} starRatedColor="orange" />
-                        <span>{review.review}</span>
+                        <span className="review-text">{review.review}</span>
                     </div>
                 );
             }
@@ -376,7 +385,10 @@ class Court extends React.Component {
                         </Form.Group>
                         <Form.Group className="text-left">
                             <Form.Label>review</Form.Label>
-                            <textarea placeholder="write your review here..." name='review' className="form-control" col="2" onChange={this.handleChange}></textarea>
+                            <textarea maxLength="200" placeholder="write your review here..." name='review' className="form-control" col="2" onChange={this.handleChange}></textarea>
+                            <div className="text-right">
+                                <span className="text-secondary">{this.state.review.length + "/200"}</span>
+                            </div>
                         </Form.Group>
                         <div className="text-right">
                             <button className="btn btn-primary" type="submit">add review</button>

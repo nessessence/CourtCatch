@@ -81,8 +81,8 @@ class Signup extends React.Component {
                 });
             }
             catch(err){
-                console.error(err);
-                alert(err.message);
+                console.log(err);
+                alert(err);
             }
      
         }
@@ -103,20 +103,44 @@ class Signup extends React.Component {
 
     validateEmail = (email) => {
         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(email.toLowerCase());
+        return re.test(email.toLowerCase());    
       }
 
     validateForm = () => {
         let formErrors = this.state.formErrors;
 
         let firstname = this.state.firstname;
-        formErrors.firstname = firstname.length === 0 ? "this field is required" : "";
-
+        if ( firstname === "" ){
+            formErrors.firstname = "this field is required";
+        }
+        else if ( firstname.length > 30 ){
+            formErrors.firstname = "first name should be equal to or less than 30 characters";
+        }
+        else {
+            formErrors.firstname = "";
+        }
+        
         let lastname = this.state.lastname;
-        formErrors.lastname = lastname.length === 0 ? "this field is required" : "";
+        if ( lastname === "" ){
+            formErrors.lastname = "this field is required";
+        }
+        else if ( lastname.length > 150 ){
+            formErrors.lastname = "last name should be equal to or less than 150 characters";
+        }
+        else {
+            formErrors.lastname = "";
+        }
 
         let username = this.state.username;
-        formErrors.username = username.length === 0 ? "this field is required" : "";
+        if ( username === "" ){
+            formErrors.username = "this field is required";
+        }
+        else if ( username.length > 150 ){
+            formErrors.username = "username should be equal to or less than 150 characters";
+        }
+        else {
+            formErrors.username = "";
+        }
 
         let password = this.state.password;
         if ( password.length === 0 ){

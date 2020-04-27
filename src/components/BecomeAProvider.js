@@ -122,7 +122,19 @@ class BecomeAProvider extends React.Component {
 
         formErrors.thaiFirstName = this.state.thaiFirstName === "" ? "this field is required" : "";
         formErrors.thaiLastName = this.state.thaiLastName === "" ? "this field is required" : "";
-        formErrors.dob = this.state.dob === "" ? "this field is required" : "";
+
+        let dob = this.state.dob;
+        if ( dob === "" ){
+            formErrors.dob = "this field is required";
+        }
+        else if ( new Date(dob) > new Date() ){
+            let now = new Date();
+            console.log(now);
+            formErrors.dob = "value must be " + (now.getMonth()+1)+"/" +(now.getDate())+"/" +(now.getFullYear()) + " or earlier";
+        }
+        else {
+            formErrors.dob = "";
+        }
         
         let cid = this.state.cid;
         if ( cid === "" ){
@@ -135,12 +147,42 @@ class BecomeAProvider extends React.Component {
             formErrors.cid = "";
         }
 
-        formErrors.cbid = this.state.cbid === "" ? "this field is required" : "";
+        let cbid = this.state.cbid;
+        if ( cbid === "" ){
+            formErrors.cbid = "this field is required";
+        }
+        else if ( cbid.length !== 12 ){
+            formErrors.cbid = "input format is not correct";
+        }
+        else {
+            formErrors.cbid = "";
+        }
+
         formErrors.occupation = this.state.occupation === "" ? "this field is required" : "";
         formErrors.residentialAddress = this.state.residentialAddress === "" ? "this field is required" : "";
         formErrors.resgisteredAddress = this.state.resgisteredAddress === "" ? "this field is required" : "";
-        formErrors.photoHoldingCID = this.state.photoHoldingCID === "" ? "this field is required" : "";
-        formErrors.photoHoldingIC = this.state.photoHoldingIC === "" ? "this field is required" : "";
+
+        let photoHoldingCID = this.state.photoHoldingCID;
+        if ( photoHoldingCID === "" ){
+            formErrors.photoHoldingCID = "this field is required";
+        }
+        else if ( !photoHoldingCID.type.includes("image") ){
+            formErrors.photoHoldingCID = "file should be image file";
+        }
+        else {
+            formErrors.photoHoldingCID = "";
+        }
+
+        let photoHoldingIC = this.state.photoHoldingIC;
+        if ( photoHoldingIC === "" ){
+            formErrors.photoHoldingIC = "this field is required";
+        }
+        else if ( !photoHoldingIC.type.includes("image") ){
+            formErrors.photoHoldingIC = "file should be image file";
+        }
+        else {
+            formErrors.photoHoldingIC = "";
+        }
 
         this.setState({
             formErrors: formErrors
@@ -242,7 +284,7 @@ class BecomeAProvider extends React.Component {
                         <Form.Group as={Row}>
                             <Form.Label column sm="4">Photo of you holding your Citizen ID</Form.Label>
                             <Col>
-                                <Form.Control onChange={this.handleImageChange} name="photoHoldingCID" type="file"></Form.Control>
+                                <Form.Control accept="image/*" onChange={this.handleImageChange} name="photoHoldingCID" type="file"></Form.Control>
                                 <p className="error-form-field">{this.state.formErrors.photoHoldingCID}</p>
                                 <div className="d-flex flex-col justify-content-between">
                                     <img id="facecid-placeholder" className="upload-image" src={this.state.photoHoldingCID === "" ? ImagePlaceholder : this.state.photoHoldingCIDPreviewUrl} />
@@ -253,7 +295,7 @@ class BecomeAProvider extends React.Component {
                         <Form.Group as={Row}>
                             <Form.Label column sm="4">Photo of your IC</Form.Label>
                             <Col>
-                                <Form.Control onChange={this.handleImageChange} name="photoHoldingIC" type="file"></Form.Control>
+                                <Form.Control accept="image/*" onChange={this.handleImageChange} name="photoHoldingIC" type="file"></Form.Control>
                                 <p className="error-form-field">{this.state.formErrors.photoHoldingIC}</p>
                                 <div className="d-flex flex-col justify-content-between">
                                     <img id="cid-placeholder" className="upload-image" src={this.state.photoHoldingIC === "" ? ImagePlaceholder : this.state.photoHoldingICPreviewUrl} />

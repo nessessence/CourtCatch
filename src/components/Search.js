@@ -28,6 +28,11 @@ class Search extends React.Component {
             shouldSetText: false,
             speechText: "",
             loading_speech: false,
+
+            formErrors: {
+                rating: "",
+                time: ""
+            }
  
         }
     }
@@ -36,7 +41,41 @@ class Search extends React.Component {
         // AOS.init();
     }
 
+    isSearchFormValid = () => {
+        this.validateSearchForm();
+        return this.state.formErrors.rating === "" && this.state.formErrors.time === "";
+    }
+
+    validateSearchForm = () => {
+        let formErrors = this.state.formErrors;
+
+        let rating = parseFloat(this.state.rating);
+        if ( rating < 0 || rating > 5 ){
+            formErrors.rating = "min rating should be ranged from 0 to 5";
+        }
+        else {
+            formErrors.rating = "";
+        }
+
+        let start_time = this.state.start_time;
+        let end_time = this.state.end_time;
+
+        if ( start_time >= end_time ){
+            formErrors.time = "start and end time are invalid"
+        }
+        else {
+            formErrors.time = "";
+        }
+
+        this.setState({
+            formErrors
+        })
+    }
+
     handleSearchByLocation =  () => {
+        if ( !this.isSearchFormValid() ){
+            return ;
+        }
         console.log('handle search by location');
             const location = window.navigator && window.navigator.geolocation
             
@@ -61,6 +100,9 @@ class Search extends React.Component {
     }
 
     handleSearchByName =  () => {
+        if ( !this.isSearchFormValid() ){
+            return ;
+        }
         console.log('handle search');   
         this.setState({
             searchByName: true
@@ -200,6 +242,7 @@ class Search extends React.Component {
                                 <Form.Group className="row">
                                     <Form.Label className="col-md-4">min rating</Form.Label>
                                     <Form.Control className="col-md-6" max="5" min="0" type="number" name="rating" onChange={this.handleChange} placeholder="1.0" defaultValue={this.state.rating}></Form.Control>
+                                    <span className="error-form-field">{this.state.formErrors.rating}</span>
                                 </Form.Group>
                                 <Form.Group className="row">
                                     <Form.Label className="col-md-4">start time</Form.Label>
@@ -208,6 +251,7 @@ class Search extends React.Component {
                                 <Form.Group className="row">
                                     <Form.Label className="col-md-4">end time</Form.Label>
                                     <Form.Control className="col-md-6" max="24" min="0" type="time" name="end_time" onChange={this.handleChange} defaultValue="12:00"></Form.Control>
+                                    <span className="error-form-field">{this.state.formErrors.time}</span>
                                 </Form.Group>
                                 <Form.Group className="row">
                                     <Form.Label className="col-md-4">day of the week</Form.Label>

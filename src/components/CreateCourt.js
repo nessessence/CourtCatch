@@ -74,6 +74,11 @@ class CreateCourt extends React.Component {
                 });
                 alert(err);
             }
+            finally {
+                this.setState({
+                    isSubmiting: false
+                })
+            }
         }
     }
 
@@ -83,6 +88,10 @@ class CreateCourt extends React.Component {
             if ( this.state.formErrors[field] !== "" ){
                 valid = false;
             }
+        }
+
+        if ( !valid ){
+            window.scrollTo(0,0);
         }
 
         return valid;
@@ -95,6 +104,9 @@ class CreateCourt extends React.Component {
         if ( name === "" ){
             formErrors.name = "this field is required";
         }
+        else if ( name.length > 30 ){
+            formErrors.name = "name should be equal to or less than 30 characters";
+        }
         else {
             formErrors.name = "";
         }
@@ -103,8 +115,19 @@ class CreateCourt extends React.Component {
         if ( price === "" ){
             formErrors.price = "this field is required";
         }
+        else if ( parseFloat(price) < 0 ){
+            formErrors.price = "price must be larger than 0";
+        }
         else {
             formErrors.price = "";
+        }
+
+        let desc = this.state.desc;
+        if ( desc.length > 200 ){
+            formErrors.desc = "description length musts be equal to or less than 200 characters";
+        }
+        else {
+            formErrors.desc = "";
         }
 
         let courtCount = this.state.courtCount;
@@ -112,7 +135,7 @@ class CreateCourt extends React.Component {
             formErrors.courtCount = "this field is required";
         }
         else if ( parseInt(courtCount) < 1 ){
-            formErrors.courtCount = "input is invalid";
+            formErrors.courtCount = "court count must be larger than 0";
         }
         else {
             formErrors.courtCount = "";
@@ -228,6 +251,9 @@ class CreateCourt extends React.Component {
                             <Form.Label>Court Description</Form.Label>
                             <textarea name="desc" className="form-control" row="2" onChange={this.handleChange} placeholder="type something descripes your court"></textarea>
                             <p className="error-form-field">{this.state.formErrors.desc}</p>
+                            <div className="text-right">
+                                <span className="text-secondary">{this.state.desc.length + "/200"}</span>
+                            </div>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Court Count</Form.Label>
