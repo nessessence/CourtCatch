@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './court.css';
 import weekdays from '../constants/weekdays';
-import {Row, Col, Form, Table} from 'react-bootstrap';
+import {Row, Col, Form, Table, Modal, Button} from 'react-bootstrap';
 import {court as courtActions, auth as authActions} from '../actions';
 import { Redirect, Link } from 'react-router-dom';
 import ReactLoading from 'react-loading';
@@ -19,7 +19,8 @@ class MyBooking extends React.Component {
             orderedShuttlecocks: null,
             requesting: false,
             shouldRedirect: false,
-            shouldRedirectMain: false
+            shouldRedirectMain: false,
+            showModal: false
         }
     }
 
@@ -71,7 +72,7 @@ class MyBooking extends React.Component {
             return this.pad(timeNum/2,2) + ":00";
         }
         else {
-            return this.pad(timeNum/2,2) + ":30";
+            return this.pad((timeNum-1)/2,2) + ":30";
         }
     }
 
@@ -92,14 +93,16 @@ class MyBooking extends React.Component {
             window.location.reload();
         }
         catch(err){
-            alert("something went wrong, please try again later.");
+            console.log(err.response.data.message);
+            alert(err.response.data.message)
+            this.setState({
+                requesting: false
+            })
         }
     }
 
     handleReserveShuttlecock = async () => {
-        this.setState({
-            requesting: true
-        })
+
         let toBuyShuttlecocks = [];
         for(let i=0; i<this.state.shuttlecocks.length; ++i){
             let shuttlecock = this.state.shuttlecocks[i];
@@ -114,6 +117,20 @@ class MyBooking extends React.Component {
             return;
         }
 
+        for(const sc in toBuyShuttlecocks){
+            if ( !Number.isInteger(sc.count) ){
+                alert("shuttlecock amount must be integer");
+                return ;
+            }
+            if ( parseInt(sc.count) <= 0 ){
+                alert("shuttlecock amount must be larger than zero");
+                return ;
+            }
+        }
+
+        this.setState({
+            requesting: true
+        })
         try{
             for(let i=0; i<toBuyShuttlecocks.length; ++i){
                 let shuttlecock = toBuyShuttlecocks[i];
@@ -125,6 +142,9 @@ class MyBooking extends React.Component {
         catch(err){
             alert(err.response.data.message);
             console.error(err);
+            this.setState({
+                requesting: false
+            })
         }
         
     }
@@ -159,6 +179,18 @@ class MyBooking extends React.Component {
         }
     }
 
+    closeModal = () => {
+        this.setState({
+            showModal: false
+        })
+    }
+
+    showCancelModal = () => {
+        this.setState({
+            showModal: true
+        })
+    }
+
     handleCancelCourt = async () => {
         this.setState({
             requesting: true
@@ -174,7 +206,11 @@ class MyBooking extends React.Component {
             // alert("something went wrong, please try again later.");
             alert(err.response.data.message);
             console.error(err);
+            this.setState({
+                requesting: false
+            })
         }
+       
     }
 
     render(){
@@ -292,13 +328,14 @@ class MyBooking extends React.Component {
                     <div className="header-text-group">
                         <h5>Do you want to reserve rackets or order shuttlecocks?</h5>
                     </div>
+                { (this.state.loadFinish && reserveRacketSection.length > 0 ) ?  
                     <div className="section-border">
                         <h5>Reserve Rackets</h5>
                         <Table responsive>
                             <thead>
                                 <tr>
                                     <th>name</th>
-                                    <th>price(bath)</th>
+                                    <th>price(bath/hr)</th>
                                     <th>reservation</th>
                                 </tr>
                             </thead>
@@ -306,7 +343,8 @@ class MyBooking extends React.Component {
                                 {reserveRacketSection}
                             </tbody>
                         </Table>
-                    </div>
+                    </div> : <p className="text-secondary">this court has no racket reservation.</p>}
+                    {(this.state.loadFinish && reserveShuttlecockSection.length > 0 ) ? 
                     <div className="section-border">
                         <h5>Order Shuttlecocks</h5>
                         <Table responsive>
@@ -326,11 +364,24 @@ class MyBooking extends React.Component {
                         <div className="text-right">
                             <button disabled={this.state.requesting} className="btn btn-primary" onClick={this.handleReserveShuttlecock}>order shuttlecocks</button>
                         </div>
-                    </div>
+                    </div> : <p className="text-secondary">this court has no shuttlecock for ordering.</p>}
                     <div className="section-border text-right">
-                        <button disabled={this.state.requesting } className="btn btn-danger" onClick={this.handleCancelCourt}>Cancel Court Reservation</button>
+                        <button disabled={this.state.requesting } className="btn btn-danger" onClick={this.showCancelModal}>Cancel Court Reservation</button>
                     </div>
                 </div>
+                <Modal show={this.state.showModal} onHide={this.closeModal}>
+                    <Modal.Header closeButton>
+                    <Modal.Title>Do you want to <span className="text-danger">CANCEL</span> this reservation?</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Footer>
+                    <Button variant="secondary" onClick={this.closeModal}>
+                        back
+                    </Button>
+                    <Button variant="danger" onClick={this.handleCancelCourt}>
+                        cancel reservation
+                    </Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
         );
 
