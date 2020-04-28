@@ -20,7 +20,7 @@ class Contact extends React.Component{
           this.setState({
               marker: marker,
           });
-          console.log(marker);
+        //   console.log(marker);
     };
 
     render(){
