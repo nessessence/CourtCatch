@@ -76,7 +76,7 @@ class Search extends React.Component {
         if ( !this.isSearchFormValid() ){
             return ;
         }
-        console.log('handle search by location');
+        // console.log('handle search by location');
             const location = window.navigator && window.navigator.geolocation
             
             if (location) {
@@ -103,7 +103,7 @@ class Search extends React.Component {
         if ( !this.isSearchFormValid() ){
             return ;
         }
-        console.log('handle search');   
+        // console.log('handle search');   
         this.setState({
             searchByName: true
         })
@@ -136,7 +136,7 @@ class Search extends React.Component {
       }
     
       stopRecording = () => {
-          console.log("stop recorind");
+        //   console.log("stop recorind");
         this.setState({
           record: false,
           loading_speech: true
@@ -144,7 +144,7 @@ class Search extends React.Component {
       }
     
       onData = (recordedBlob) => {
-        console.log('chunk of real-time data is: ', recordedBlob);
+        // console.log('chunk of real-time data is: ', recordedBlob);
       }
     
       onStop = (recordedBlob) => {
