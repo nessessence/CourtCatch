@@ -258,7 +258,7 @@ class Court extends React.Component {
           this.setState({
               marker: marker,
           });
-          console.log(marker);
+        //   console.log(marker);
     };
 
     handleCheckbox = (e) => {
