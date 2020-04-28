@@ -45,12 +45,12 @@ class Login extends React.Component {
         e.preventDefault();
         this.validateForm();
         
-        console.log('handle submit');
+        // console.log('handle submit');
         if ( this.isFormValid() ){
-            console.log('form valid');
+            // console.log('form valid');
             try {
                 await this.props.login(this.state.username, this.state.password);
-                console.log('close log in modal');
+                // console.log('close log in modal');
                 await this.props.loadUser(this.state.username);
                 this.closeLoginModal();
                 return <Redirect to="/" />
