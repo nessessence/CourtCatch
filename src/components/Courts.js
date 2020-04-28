@@ -41,7 +41,7 @@ class Courts extends React.Component {
         }
 
         let res = await this.props.searchCourts(queryParams);
-        console.log(res);
+        // console.log(res);
         this.setState({
             courts: res,
             start_time,
@@ -63,7 +63,7 @@ class Courts extends React.Component {
 
     sortCourts = (filter,filterMode) => {
         let courts = this.state.courts;
-        console.log(courts);
+        // console.log(courts);
         courts.sort((back,front) => {
 
             let logic;
@@ -91,7 +91,7 @@ class Courts extends React.Component {
             return -1;
         });
 
-        console.log(courts)
+        // console.log(courts)
         
         this.setState({
             courts,
