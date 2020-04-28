@@ -52,12 +52,12 @@ class Courts extends React.Component {
     }
 
     changeFilter = (e) => {
-        console.log("change filter");
+        // console.log("change filter");
         this.sortCourts(e.value, this.state.filterMode);
     }
 
     changeFilterMode = e => {
-        console.log("change filter mode")
+        // console.log("change filter mode")
         this.sortCourts(this.state.filter, e.value);
     }
 
@@ -68,24 +68,24 @@ class Courts extends React.Component {
 
             let logic;
             if ( filter === "name" ){
-                console.log("filter name")
+                // console.log("filter name")
                 logic = back.name > front.name;
             }
             else if ( filter === "rating" ){
-                console.log("filter rating")
+                // console.log("filter rating")
                 logic = back.avg_score > front.avg_score;
             }
             else {
-                console.log("filter price")
+                // console.log("filter price")
                 logic = back.price > front.price;
             }
     
             if ( filterMode === "descending" ){
-                console.log("filter mode descending")
+                // console.log("filter mode descending")
                 logic = !logic;
             }
             else {
-                console.log("filter mode ascending")
+                // console.log("filter mode ascending")
             }
             if ( logic ) return 1;
             return -1;
