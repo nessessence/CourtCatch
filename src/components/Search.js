@@ -148,7 +148,7 @@ class Search extends React.Component {
       }
     
       onStop = (recordedBlob) => {
-        console.log('recordedBlob is: ', recordedBlob);
+        // console.log('recordedBlob is: ', recordedBlob);
         const file = new File([recordedBlob.blob], this.props.user.username+".weba", { 'type' : 'audio/weba' });
         // // const file = new Blob(recordedBlob, { 'type' : 'audio/wav; codecs=0' });
         // // const file =  recordedBlob;
